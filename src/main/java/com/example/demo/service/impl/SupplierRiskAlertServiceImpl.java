@@ -1,6 +1,5 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.SupplierRiskAlert;
 import com.example.demo.repository.SupplierRiskAlertRepository;
 import com.example.demo.service.SupplierRiskAlertService;
@@ -11,33 +10,32 @@ import java.util.List;
 @Service
 public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
 
-    private final SupplierRiskAlertRepository riskAlertRepository;
+    private final SupplierRiskAlertRepository repo;
 
-    public SupplierRiskAlertServiceImpl(SupplierRiskAlertRepository riskAlertRepository) {
-        this.riskAlertRepository = riskAlertRepository;
+    public SupplierRiskAlertServiceImpl(SupplierRiskAlertRepository repo) {
+        this.repo = repo;
     }
 
     @Override
     public SupplierRiskAlert createAlert(SupplierRiskAlert alert) {
         alert.setResolved(false);
-        return riskAlertRepository.save(alert);
-    }
-
-    @Override
-    public List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId) {
-        return riskAlertRepository.findBySupplierId(supplierId);
+        return repo.save(alert);
     }
 
     @Override
     public SupplierRiskAlert resolveAlert(Long alertId) {
-        SupplierRiskAlert alert = riskAlertRepository.findById(alertId)
-                .orElseThrow(() -> new ResourceNotFoundException("Alert not found"));
+        SupplierRiskAlert alert = repo.findById(alertId).orElseThrow();
         alert.setResolved(true);
-        return riskAlertRepository.save(alert);
+        return repo.save(alert);
+    }
+
+    @Override
+    public List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId) {
+        return repo.findBySupplierId(supplierId);
     }
 
     @Override
     public List<SupplierRiskAlert> getAllAlerts() {
-        return riskAlertRepository.findAll();
+        return repo.findAll();
     }
 }
