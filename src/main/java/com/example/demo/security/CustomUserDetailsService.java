@@ -1,57 +1,31 @@
 package com.example.demo.security;
 
 import com.example.demo.model.AppUser;
-import org.springframework.security.core.GrantedAuthority;
+import com.example.demo.repository.AppUserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.*;
+import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 
-public class CustomUserDetails implements UserDetails {
+@Service
+public class CustomUserDetailsService implements UserDetailsService {
 
-    private final AppUser user;
+    private final AppUserRepository repository;
 
-    public CustomUserDetails(AppUser user) {
-        this.user = user;
-    }
-
-    public AppUser getUser() {
-        return user;
+    public CustomUserDetailsService(AppUserRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
-    }
+    public UserDetails loadUserByUsername(String email) {
+        AppUser user = repository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-    @Override
-    public String getPassword() {
-        return user.getPassword();
-    }
-
-    @Override
-    public String getUsername() {
-        return user.getUsername();
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
+        return new User(
+                user.getEmail(),
+                user.getPassword(),
+                List.of(new SimpleGrantedAuthority(user.getRole()))
+        );
     }
 }
