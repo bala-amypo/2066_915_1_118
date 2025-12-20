@@ -1,9 +1,12 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.*;
+import com.example.demo.dto.LoginRequest;
+import com.example.demo.dto.RegisterRequest;
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.model.AppUser;
 import com.example.demo.repository.AppUserRepository;
-import com.example.demo.security.*;
+import com.example.demo.security.CustomUserDetailsService;
+import com.example.demo.security.JwtTokenProvider;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,36 +15,45 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final CustomUserDetailsService userDetailsService;
-    private final JwtTokenProvider tokenProvider;
-    private final PasswordEncoder encoder;
-    private final AppUserRepository repository;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final PasswordEncoder passwordEncoder;
+    private final AppUserRepository appUserRepository;
 
     public AuthController(CustomUserDetailsService userDetailsService,
-                          JwtTokenProvider tokenProvider,
-                          PasswordEncoder encoder,
-                          AppUserRepository repository) {
+                          JwtTokenProvider jwtTokenProvider,
+                          PasswordEncoder passwordEncoder,
+                          AppUserRepository appUserRepository) {
         this.userDetailsService = userDetailsService;
-        this.tokenProvider = tokenProvider;
-        this.encoder = encoder;
-        this.repository = repository;
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.passwordEncoder = passwordEncoder;
+        this.appUserRepository = appUserRepository;
     }
 
     @PostMapping("/register")
     public AppUser register(@RequestBody RegisterRequest request) {
-        AppUser user = new AppUser(
-                request.getEmail(),
-                encoder.encode(request.getPassword()),
-                request.getRole()
-        );
-        return repository.save(user);
+
+        if (appUserRepository.existsByEmail(request.getEmail())) {
+            throw new BadRequestException("Email already exists");
+        }
+
+        AppUser user = new AppUser();
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole(request.getRole());
+
+        return appUserRepository.save(user);
     }
 
     @PostMapping("/login")
     public String login(@RequestBody LoginRequest request) {
-        AppUser user = repository.findByEmail(request.getEmail()).orElseThrow();
-        if (!encoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
+
+        AppUser user = appUserRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new BadRequestException("Invalid credentials"));
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new BadRequestException("Invalid credentials");
         }
-        return tokenProvider.generateToken(user);
+
+        return jwtTokenProvider.generateToken(user);
     }
 }
