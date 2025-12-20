@@ -22,9 +22,9 @@ public class PurchaseOrderRecord {
 
     public PurchaseOrderRecord() {}
 
-    public PurchaseOrderRecord(String poNumber, Long supplierId, String itemDescription,
-                               Integer quantity, LocalDate promisedDeliveryDate,
-                               LocalDate issuedDate) {
+    public PurchaseOrderRecord(String poNumber, Long supplierId,
+                               String itemDescription, Integer quantity,
+                               LocalDate promisedDeliveryDate, LocalDate issuedDate) {
         this.poNumber = poNumber;
         this.supplierId = supplierId;
         this.itemDescription = itemDescription;
@@ -33,20 +33,9 @@ public class PurchaseOrderRecord {
         this.issuedDate = issuedDate;
     }
 
-    // Getters & Setters
+    // getters
     public Long getId() { return id; }
-    public String getPoNumber() { return poNumber; }
-    public void setPoNumber(String poNumber) { this.poNumber = poNumber; }
     public Long getSupplierId() { return supplierId; }
-    public void setSupplierId(Long supplierId) { this.supplierId = supplierId; }
-    public String getItemDescription() { return itemDescription; }
-    public void setItemDescription(String itemDescription) { this.itemDescription = itemDescription; }
     public Integer getQuantity() { return quantity; }
-    public void setQuantity(Integer quantity) { this.quantity = quantity; }
     public LocalDate getPromisedDeliveryDate() { return promisedDeliveryDate; }
-    public void setPromisedDeliveryDate(LocalDate promisedDeliveryDate) {
-        this.promisedDeliveryDate = promisedDeliveryDate;
-    }
-    public LocalDate getIssuedDate() { return issuedDate; }
-    public void setIssuedDate(LocalDate issuedDate) { this.issuedDate = issuedDate; }
 }
