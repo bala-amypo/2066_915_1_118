@@ -1,48 +1,19 @@
-package com.example.demo.service.impl;
+package com.example.demo.service;
 
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.SupplierProfile;
-import com.example.demo.repository.SupplierProfileRepository;
-import com.example.demo.service.SupplierProfileService;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class SupplierProfileServiceImpl implements SupplierProfileService {
+public interface SupplierProfileService {
 
-    private final SupplierProfileRepository supplierProfileRepository;
+    SupplierProfile createSupplier(SupplierProfile supplier);
 
-    public SupplierProfileServiceImpl(SupplierProfileRepository supplierProfileRepository) {
-        this.supplierProfileRepository = supplierProfileRepository;
-    }
+    SupplierProfile getSupplierById(Long id);
 
-    @Override
-    public SupplierProfile createSupplier(SupplierProfile supplier) {
-        return supplierProfileRepository.save(supplier);
-    }
+    Optional<SupplierProfile> getBySupplierCode(String supplierCode);
 
-    @Override
-    public SupplierProfile getSupplierById(Long id) {
-        return supplierProfileRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
-    }
+    List<SupplierProfile> getAllSuppliers();
 
-    @Override
-    public Optional<SupplierProfile> getBySupplierCode(String supplierCode) {
-        return supplierProfileRepository.findBySupplierCode(supplierCode);
-    }
-
-    @Override
-    public List<SupplierProfile> getAllSuppliers() {
-        return supplierProfileRepository.findAll();
-    }
-
-    @Override
-    public SupplierProfile updateSupplierStatus(Long id, boolean active) {
-        SupplierProfile supplier = getSupplierById(id);
-        supplier.setActive(active);
-        return supplierProfileRepository.save(supplier);
-    }
+    SupplierProfile updateSupplierStatus(Long id, boolean active);
 }
