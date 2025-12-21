@@ -1,17 +1,10 @@
-package com.example.demo.model;
+package com.example.demo.service;
 
-import jakarta.persistence.*;
+import com.example.demo.model.DeliveryRecord;
 
-@Entity
-public class DeliveryRecord {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private Long purchaseOrderId;
+import java.util.List;
 
-    // Getters & Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public Long getPurchaseOrderId() { return purchaseOrderId; }
-    public void setPurchaseOrderId(Long purchaseOrderId) { this.purchaseOrderId = purchaseOrderId; }
+public interface DeliveryRecordService {
+    DeliveryRecord recordDelivery(DeliveryRecord record);
+    List<DeliveryRecord> getByPurchaseOrderId(Long purchaseOrderId);
 }
