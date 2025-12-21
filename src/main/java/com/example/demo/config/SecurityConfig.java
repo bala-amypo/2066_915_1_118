@@ -10,28 +10,29 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    // Password encoder bean (REQUIRED)
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    // Security filter chain
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
+                // Whitelist Swagger UI and H2 console
                 .requestMatchers(
-                    "/swagger-ui/**",
-                    "/swagger-ui.html",
                     "/v3/api-docs/**",
-                    "/auth/**"
+                    "/swagger-ui.html",
+                    "/swagger-ui/**",
+                    "/h2-console/**"
                 ).permitAll()
                 .anyRequest().authenticated()
-            );
+            )
+            // Allow H2 console frames
+            .headers(headers -> headers.frameOptions().sameOrigin())
+            .httpBasic(); // Simple HTTP basic auth
 
         return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
