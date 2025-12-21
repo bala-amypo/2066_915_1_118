@@ -1,7 +1,12 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.DelayScore;
+import com.example.demo.model.DelayScoreRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface DelayScoreRecordRepository extends JpaRepository<DelayScore, Long> {
+import java.util.List;
+import java.util.Optional;
+
+public interface DelayScoreRecordRepository extends JpaRepository<DelayScoreRecord, Long> {
+    Optional<DelayScoreRecord> findByPoId(Long poId);
+    List<DelayScoreRecord> findBySupplierId(Long supplierId);
 }

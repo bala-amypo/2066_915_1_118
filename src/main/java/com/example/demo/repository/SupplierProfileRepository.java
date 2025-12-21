@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SupplierProfileRepository extends JpaRepository<SupplierProfile, Long> {
-
     Optional<SupplierProfile> findBySupplierCode(String supplierCode);
-
     List<SupplierProfile> findByActiveTrue();
 }
