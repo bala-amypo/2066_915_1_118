@@ -19,7 +19,7 @@ public class SwaggerConfig {
                         .version("1.0")
                         .description("Demo API documentation"))
                 .servers(List.of(
-                        new Server().url("https://9075.pro604cr.amypo.ai/") // your server URL
+                        new Server().url("https://9075.pro604cr.amypo.ai/") // 
                 ));
     }
 }
