@@ -3,24 +3,20 @@ package com.example.demo.service.impl;
 import com.example.demo.model.SupplierProfile;
 import com.example.demo.repository.SupplierProfileRepository;
 import com.example.demo.service.SupplierProfileService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class SupplierProfileServiceImpl implements SupplierProfileService {
 
-    private final SupplierProfileRepository repository;
-
-    public SupplierProfileServiceImpl(SupplierProfileRepository repository) {
-        this.repository = repository;
-    }
+    @Autowired
+    private SupplierProfileRepository repository;
 
     @Override
-    public SupplierProfile createSupplier(SupplierProfile supplier) {
-        supplier.setCreatedAt(LocalDateTime.now());
-        return repository.save(supplier);
+    public List<SupplierProfile> getAllSuppliers() {
+        return repository.findAll();
     }
 
     @Override
@@ -29,22 +25,21 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
     }
 
     @Override
-    public SupplierProfile getBySupplierCode(String supplierCode) {
-        return repository.findBySupplierCode(supplierCode).orElse(null);
+    public SupplierProfile createSupplier(SupplierProfile supplier) {
+        return repository.save(supplier);
     }
 
     @Override
-    public List<SupplierProfile> getAllSuppliers() {
-        return repository.findAll();
-    }
-
-    @Override
-    public SupplierProfile updateSupplierStatus(Long id, boolean active) {
-        SupplierProfile supplier = repository.findById(id).orElse(null);
-        if (supplier != null) {
-            supplier.setActive(active);
+    public SupplierProfile updateSupplier(Long id, SupplierProfile supplier) {
+        if (repository.existsById(id)) {
+            supplier.setId(id);
             return repository.save(supplier);
         }
         return null;
+    }
+
+    @Override
+    public void deleteSupplier(Long id) {
+        repository.deleteById(id);
     }
 }
