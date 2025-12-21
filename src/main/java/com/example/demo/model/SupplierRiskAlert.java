@@ -14,8 +14,8 @@ public class SupplierRiskAlert {
     private Long supplierId;
     private String alertLevel;
     private String message;
-    private Boolean resolved = false;
     private LocalDateTime alertDate;
+    private Boolean resolved = false;
 
     public SupplierRiskAlert() {}
 
@@ -26,10 +26,10 @@ public class SupplierRiskAlert {
     }
 
     @PrePersist
-    public void prePersist() {
+    protected void onCreate() {
         alertDate = LocalDateTime.now();
         if (resolved == null) resolved = false;
     }
 
-    public void setResolved(Boolean resolved) { this.resolved = resolved; }
+    // getters and setters
 }

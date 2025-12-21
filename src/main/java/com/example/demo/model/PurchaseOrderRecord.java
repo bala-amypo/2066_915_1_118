@@ -4,25 +4,31 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "purchase_order_records", uniqueConstraints = @UniqueConstraint(columnNames = "poNumber"))
 public class PurchaseOrderRecord {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String poNumber;
     private Long supplierId;
-    private Long quantity;
-    private LocalDate promisedDate;
-    private LocalDate actualDeliveryDate;
+    private String itemDescription;
+    private Integer quantity;
+    private LocalDate promisedDeliveryDate;
+    private LocalDate issuedDate;
 
-    // Getters & Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public Long getSupplierId() { return supplierId; }
-    public void setSupplierId(Long supplierId) { this.supplierId = supplierId; }
-    public Long getQuantity() { return quantity; }
-    public void setQuantity(Long quantity) { this.quantity = quantity; }
-    public LocalDate getPromisedDate() { return promisedDate; }
-    public void setPromisedDate(LocalDate promisedDate) { this.promisedDate = promisedDate; }
-    public LocalDate getActualDeliveryDate() { return actualDeliveryDate; }
-    public void setActualDeliveryDate(LocalDate actualDeliveryDate) { this.actualDeliveryDate = actualDeliveryDate; }
+    public PurchaseOrderRecord() {}
+
+    public PurchaseOrderRecord(String poNumber, Long supplierId, String itemDescription, Integer quantity,
+                               LocalDate promisedDeliveryDate, LocalDate issuedDate) {
+        this.poNumber = poNumber;
+        this.supplierId = supplierId;
+        this.itemDescription = itemDescription;
+        this.quantity = quantity;
+        this.promisedDeliveryDate = promisedDeliveryDate;
+        this.issuedDate = issuedDate;
+    }
+
+    // getters and setters
 }

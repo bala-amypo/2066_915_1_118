@@ -1,17 +1,38 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "supplier_profiles", uniqueConstraints = @UniqueConstraint(columnNames = "supplierCode"))
 public class SupplierProfile {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private boolean active;
 
-    // Getters & Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public boolean getActive() { return active; }
-    public void setActive(boolean active) { this.active = active; }
+    private String supplierCode;
+    private String supplierName;
+    private String email;
+    private String phone;
+    private Boolean active = true;
+    private LocalDateTime createdAt;
+
+    public SupplierProfile() {}
+
+    public SupplierProfile(String supplierCode, String supplierName, String email, String phone, Boolean active) {
+        this.supplierCode = supplierCode;
+        this.supplierName = supplierName;
+        this.email = email;
+        this.phone = phone;
+        this.active = active != null ? active : true;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        if (active == null) active = true;
+    }
+
+    // getters and setters
 }
