@@ -40,7 +40,8 @@ public class AuthController {
         String token = jwtTokenProvider.generateToken(
                 jwtTokenProvider.loadUserByUsername(user.getEmail())
         );
-
+                                                                                                                                                                                                                                                                                             
         return ResponseEntity.ok(token);
     }
 }
+ 
