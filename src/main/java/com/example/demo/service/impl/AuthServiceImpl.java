@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.RegisterRequest;
 import com.example.demo.model.AppUser;
 import com.example.demo.repository.AppUserRepository;
@@ -30,5 +31,19 @@ public class AuthServiceImpl implements AuthService {
         appUserRepository.save(user);
 
         return "User registered successfully";
+    }
+
+    @Override
+    public String login(LoginRequest request) {
+
+        AppUser user = appUserRepository
+                .findByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid credentials");
+        }
+
+        return "Login successful";
     }
 }
