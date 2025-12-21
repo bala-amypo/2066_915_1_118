@@ -5,12 +5,9 @@ import com.example.demo.model.DeliveryRecord;
 import java.util.List;
 
 public interface DeliveryRecordService {
-
-    DeliveryRecord recordDelivery(DeliveryRecord delivery);
-
-    DeliveryRecord getDeliveryById(Long id);
-
-    List<DeliveryRecord> getDeliveriesByPO(Long poId);
-
     List<DeliveryRecord> getAllDeliveries();
+    DeliveryRecord getDeliveryById(Long id);
+    DeliveryRecord createDelivery(DeliveryRecord record);
+    DeliveryRecord updateDelivery(Long id, DeliveryRecord record);
+    void deleteDelivery(Long id);
 }

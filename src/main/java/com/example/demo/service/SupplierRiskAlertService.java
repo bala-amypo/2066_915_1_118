@@ -5,14 +5,9 @@ import com.example.demo.model.SupplierRiskAlert;
 import java.util.List;
 
 public interface SupplierRiskAlertService {
-
-    SupplierRiskAlert createAlert(SupplierRiskAlert alert);
-
-    SupplierRiskAlert resolveAlert(Long id);
-
-    SupplierRiskAlert getAlertById(Long id);
-
-    List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId);
-
-    List<SupplierRiskAlert> getAllAlerts();
+    List<SupplierRiskAlert> getAllRiskAlerts();
+    SupplierRiskAlert getRiskAlertById(Long id);
+    SupplierRiskAlert createRiskAlert(SupplierRiskAlert alert);
+    SupplierRiskAlert updateRiskAlert(Long id, SupplierRiskAlert alert);
+    void deleteRiskAlert(Long id);
 }
