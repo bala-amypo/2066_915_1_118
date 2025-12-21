@@ -14,7 +14,7 @@ public class SwaggerConfig {
             .info(new Info()
                 .title("Demo API")
                 .version("1.0")
-                .description("")
+                .description("http://localhost:8081/swagger-ui/index.html")
             );
     }
 }
