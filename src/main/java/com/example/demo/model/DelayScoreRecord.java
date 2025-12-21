@@ -1,10 +1,8 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "delay_score_records", uniqueConstraints = @UniqueConstraint(columnNames = "poId"))
 public class DelayScoreRecord {
 
     @Id
@@ -13,14 +11,15 @@ public class DelayScoreRecord {
 
     private Long supplierId;
     private Long poId;
-    private Integer delayDays;
+    private int delayDays;
     private String delaySeverity;
-    private Double score;
-    private LocalDateTime computedAt;
+    private double score;
 
     public DelayScoreRecord() {}
 
-    public DelayScoreRecord(Long supplierId, Long poId, Integer delayDays, String delaySeverity, Double score) {
+    // ✅ REQUIRED CONSTRUCTOR
+    public DelayScoreRecord(Long supplierId, Long poId, int delayDays,
+                            String delaySeverity, double score) {
         this.supplierId = supplierId;
         this.poId = poId;
         this.delayDays = delayDays;
@@ -28,10 +27,10 @@ public class DelayScoreRecord {
         this.score = score;
     }
 
-    @PrePersist
-    protected void onCompute() {
-        computedAt = LocalDateTime.now();
-    }
-
-    // getters and setters
+    public Long getId() { return id; }
+    public Long getSupplierId() { return supplierId; }
+    public Long getPoId() { return poId; }
+    public int getDelayDays() { return delayDays; }
+    public String getDelaySeverity() { return delaySeverity; }
+    public double getScore() { return score; }
 }

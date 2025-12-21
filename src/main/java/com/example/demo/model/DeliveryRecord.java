@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "delivery_records")
 public class DeliveryRecord {
 
     @Id
@@ -12,18 +11,40 @@ public class DeliveryRecord {
     private Long id;
 
     private Long poId;
+    private int deliveredQuantity;
     private LocalDate actualDeliveryDate;
-    private Integer deliveredQuantity;
-    private String notes;
 
     public DeliveryRecord() {}
 
-    public DeliveryRecord(Long poId, LocalDate actualDeliveryDate, Integer deliveredQuantity, String notes) {
-        this.poId = poId;
-        this.actualDeliveryDate = actualDeliveryDate;
-        this.deliveredQuantity = deliveredQuantity;
-        this.notes = notes;
+    public Long getId() {
+        return id;
     }
-
-    // getters and setters
+ 
+    public void setId(Long id) {
+        this.id = id;
+    }
+ 
+    public Long getPoId() {
+        return poId;
+    }
+ 
+    public void setPoId(Long poId) {
+        this.poId = poId;
+    }
+ 
+    public int getDeliveredQuantity() {
+        return deliveredQuantity;
+    }
+ 
+    public void setDeliveredQuantity(int deliveredQuantity) {
+        this.deliveredQuantity = deliveredQuantity;
+    }
+ 
+    public LocalDate getActualDeliveryDate() {
+        return actualDeliveryDate;
+    }
+ 
+    public void setActualDeliveryDate(LocalDate actualDeliveryDate) {
+        this.actualDeliveryDate = actualDeliveryDate;
+    }
 }
