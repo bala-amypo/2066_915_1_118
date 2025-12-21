@@ -10,40 +10,24 @@ public class SupplierRiskAlert {
     private Long id;
 
     private Long supplierId;
+    private String alertLevel;
     private String message;
-    private boolean resolved;
+    private boolean resolved = false;
 
     public SupplierRiskAlert() {}
 
-    public Long getId() {
-        return id;
-    }
- 
-    public void setId(Long id) {
-        this.id = id;
-    }
- 
-    public Long getSupplierId() {
-        return supplierId;
-    }
- 
-    public void setSupplierId(Long supplierId) {
+    // ✅ REQUIRED CONSTRUCTOR
+    public SupplierRiskAlert(Long supplierId, String alertLevel, String message) {
         this.supplierId = supplierId;
-    }
- 
-    public String getMessage() {
-        return message;
-    }
- 
-    public void setMessage(String message) {
+        this.alertLevel = alertLevel;
         this.message = message;
+        this.resolved = false;
     }
- 
-    public boolean isResolved() {
-        return resolved;
-    }
- 
-    public void setResolved(boolean resolved) {
-        this.resolved = resolved;
-    }
+
+    public Long getId() { return id; }
+    public Long getSupplierId() { return supplierId; }
+    public String getAlertLevel() { return alertLevel; }
+    public String getMessage() { return message; }
+    public boolean isResolved() { return resolved; }
+    public void setResolved(boolean resolved) { this.resolved = resolved; }
 }

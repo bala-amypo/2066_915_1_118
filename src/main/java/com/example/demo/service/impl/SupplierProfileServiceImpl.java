@@ -5,7 +5,7 @@ import com.example.demo.repository.SupplierProfileRepository;
 import com.example.demo.service.SupplierProfileService;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class SupplierProfileServiceImpl implements SupplierProfileService {
@@ -17,18 +17,15 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
     }
 
     @Override
-    public SupplierProfile updateSupplierStatus(Long id, boolean status) {
-        Optional<SupplierProfile> opt = repository.findById(id);
-        if(opt.isPresent()) {
-            SupplierProfile sp = opt.get();
-            sp.setActive(status);
-            return repository.save(sp);
-        }
-        return null;
+    public List<SupplierProfile> getAllSuppliers() {
+        return repository.findAll();
     }
 
     @Override
-    public SupplierProfile updateSupplier(SupplierProfile profile) {
-        return repository.save(profile);
+    public SupplierProfile updateSupplierStatus(Long id, boolean active) {
+        SupplierProfile sp = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Supplier not found"));
+        sp.setActive(active);
+        return repository.save(sp);
     }
 }

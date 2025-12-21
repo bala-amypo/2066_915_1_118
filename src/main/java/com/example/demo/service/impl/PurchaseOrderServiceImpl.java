@@ -25,6 +25,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
     @Override
     public PurchaseOrderRecord createPurchaseOrder(PurchaseOrderRecord po) {
+
         SupplierProfile supplier = supplierRepository.findById(po.getSupplierId())
                 .orElseThrow(() -> new BadRequestException("Invalid supplierId"));
 
@@ -32,7 +33,8 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
             throw new BadRequestException("Supplier must be active");
         }
 
-        if (po.getQuantity() == null || po.getQuantity() <= 0) {
+        // ✅ FIXED CONDITION (NO null check)
+        if (po.getQuantity() <= 0) {
             throw new BadRequestException("Quantity must be greater than 0");
         }
 
