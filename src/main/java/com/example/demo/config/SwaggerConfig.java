@@ -1,6 +1,6 @@
 package com.example.demo.config;
 
-import io.swagger.v3.oas.models.*;
+import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,11 +9,12 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
 
     @Bean
-    public OpenAPI api() {
+    public OpenAPI customOpenAPI() {
         return new OpenAPI()
-                .info(new Info()
-                        .title("Supply Chain Weak Link Analyzer API")
-                        .description("Supplier, PO, Delivery, Delay & Risk Analysis")
-                        .version("1.0"));
+            .info(new Info()
+                .title("Demo API")
+                .version("1.0")
+                .description("Sample Spring Boot application with Swagger UI")
+            );
     }
 }
