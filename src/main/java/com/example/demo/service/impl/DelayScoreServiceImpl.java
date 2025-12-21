@@ -1,71 +1,50 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.DelayScoreRecord;
-import com.example.demo.model.PurchaseOrderRecord;
-import com.example.demo.repository.DelayScoreRepository;
-import com.example.demo.repository.PurchaseOrderRepository;
+import com.example.demo.model.DelayScore;
+import com.example.demo.repository.DelayScoreRecordRepository;
 import com.example.demo.service.DelayScoreService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DelayScoreServiceImpl implements DelayScoreService {
 
-    private final DelayScoreRepository delayScoreRepository;
-    private final PurchaseOrderRepository purchaseOrderRepository;
+    @Autowired
+    private DelayScoreRecordRepository repository;
 
-    public DelayScoreServiceImpl(DelayScoreRepository delayScoreRepository,
-                                 PurchaseOrderRepository purchaseOrderRepository) {
-        this.delayScoreRepository = delayScoreRepository;
-        this.purchaseOrderRepository = purchaseOrderRepository;
+    @Override
+    public DelayScore createDelayScore(DelayScore delayScore) {
+        return repository.save(delayScore);
     }
 
     @Override
-    public DelayScoreRecord computeDelayScore(Long poId) {
-        PurchaseOrderRecord po =
-                purchaseOrderRepository.findById(poId).orElse(null);
-
-        if (po == null) return null;
-
-        long delayDays = ChronoUnit.DAYS.between(
-                po.getPromisedDeliveryDate(), LocalDate.now());
-
-        if (delayDays < 0) delayDays = 0;
-
-        String severity =
-                delayDays == 0 ? "ON_TIME" :
-                delayDays <= 3 ? "LOW" :
-                delayDays <= 7 ? "MEDIUM" : "HIGH";
-
-        double score = Math.max(0, 100 - (delayDays * 5));
-
-        DelayScoreRecord record = new DelayScoreRecord();
-        record.setPoId(poId);
-        record.setSupplierId(po.getSupplierId());
-        record.setDelayDays((int) delayDays);
-        record.setDelaySeverity(severity);
-        record.setScore(score);
-        record.setComputedAt(LocalDateTime.now());
-
-        return delayScoreRepository.save(record);
+    public List<DelayScore> getAllDelayScores() {
+        return repository.findAll();
     }
 
     @Override
-    public DelayScoreRecord getScoreById(Long id) {
-        return delayScoreRepository.findById(id).orElse(null);
+    public DelayScore getDelayScoreById(Long id) {
+        Optional<DelayScore> optional = repository.findById(id);
+        return optional.orElse(null);
     }
 
     @Override
-    public List<DelayScoreRecord> getScoresBySupplier(Long supplierId) {
-        return delayScoreRepository.findBySupplierId(supplierId);
+    public DelayScore updateDelayScore(Long id, DelayScore delayScore) {
+        Optional<DelayScore> optional = repository.findById(id);
+        if (optional.isPresent()) {
+            DelayScore existing = optional.get();
+            existing.setScore(delayScore.getScore());
+            existing.setDescription(delayScore.getDescription());
+            return repository.save(existing);
+        }
+        return null;
     }
 
     @Override
-    public List<DelayScoreRecord> getAllScores() {
-        return delayScoreRepository.findAll();
+    public void deleteDelayScore(Long id) {
+        repository.deleteById(id);
     }
 }
