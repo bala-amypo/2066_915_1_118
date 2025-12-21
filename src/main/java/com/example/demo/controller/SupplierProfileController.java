@@ -9,32 +9,38 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/suppliers")
-@Tag(name = "Supplier Management")
+@Tag(name = "Supplier Profile")
 public class SupplierProfileController {
 
-    private final SupplierProfileService service;
+    private final SupplierProfileService supplierProfileService;
 
-    public SupplierProfileController(SupplierProfileService service) {
-        this.service = service;
+    public SupplierProfileController(SupplierProfileService supplierProfileService) {
+        this.supplierProfileService = supplierProfileService;
     }
 
     @PostMapping
-    public SupplierProfile create(@RequestBody SupplierProfile supplier) {
-        return service.createSupplier(supplier);
+    public SupplierProfile createSupplier(@RequestBody SupplierProfile supplier) {
+        return supplierProfileService.createSupplier(supplier);
     }
 
     @GetMapping("/{id}")
-    public SupplierProfile getById(@PathVariable Long id) {
-        return service.getSupplierById(id);
+    public SupplierProfile getSupplier(@PathVariable Long id) {
+        return supplierProfileService.getSupplierById(id);
     }
 
     @GetMapping
-    public List<SupplierProfile> getAll() {
-        return service.getAllSuppliers();
+    public List<SupplierProfile> getAllSuppliers() {
+        return supplierProfileService.getAllSuppliers();
     }
 
     @PutMapping("/{id}/status")
-    public SupplierProfile updateStatus(@PathVariable Long id, @RequestParam boolean active) {
-        return service.updateSupplierStatus(id, active);
+    public SupplierProfile updateStatus(@PathVariable Long id,
+                                        @RequestParam boolean active) {
+        return supplierProfileService.updateSupplierStatus(id, active);
+    }
+
+    @GetMapping("/lookup/{supplierCode}")
+    public SupplierProfile getByCode(@PathVariable String supplierCode) {
+        return supplierProfileService.getBySupplierCode(supplierCode);
     }
 }
