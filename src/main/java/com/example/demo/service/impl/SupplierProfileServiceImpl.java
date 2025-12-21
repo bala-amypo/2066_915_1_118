@@ -17,20 +17,28 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
     }
 
     @Override
+    public SupplierProfile createSupplier(SupplierProfile supplierProfile) {
+        return repository.save(supplierProfile);
+    }
+
+    @Override
+    public SupplierProfile getSupplierById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Supplier not found with id: " + id));
+    }
+
+    @Override
     public List<SupplierProfile> getAllSuppliers() {
         return repository.findAll();
     }
 
     @Override
     public SupplierProfile updateSupplierStatus(Long id, boolean active) {
-        SupplierProfile supplier = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Supplier not found"));
-
+        SupplierProfile supplier = getSupplierById(id);
         supplier.setActive(active);
         return repository.save(supplier);
     }
 
-    // ✅ REQUIRED METHOD IMPLEMENTATION
     @Override
     public SupplierProfile getBySupplierCode(String supplierCode) {
         return repository.findBySupplierCode(supplierCode)

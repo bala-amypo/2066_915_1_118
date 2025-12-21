@@ -5,10 +5,13 @@ import java.util.List;
 
 public interface SupplierProfileService {
 
+    SupplierProfile createSupplier(SupplierProfile supplierProfile);
+
+    SupplierProfile getSupplierById(Long id);
+
     List<SupplierProfile> getAllSuppliers();
 
     SupplierProfile updateSupplierStatus(Long id, boolean active);
 
-    // ✅ THIS METHOD CAUSED THE ERROR
     SupplierProfile getBySupplierCode(String supplierCode);
 }
