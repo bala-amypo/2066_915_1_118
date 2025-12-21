@@ -14,7 +14,7 @@ public class SwaggerConfig {
             .info(new Info()
                 .title("Demo API")
                 .version("1.0")
-                .description("http://localhost:8081/swagger-ui/index.html")
+                .description("https://9075.pro604cr.amypo.ai/")
             );
     }
 }
