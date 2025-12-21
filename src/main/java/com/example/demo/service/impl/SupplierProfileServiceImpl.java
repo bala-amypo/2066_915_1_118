@@ -5,6 +5,7 @@ import com.example.demo.repository.SupplierProfileRepository;
 import com.example.demo.service.SupplierProfileService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -17,14 +18,19 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
     }
 
     @Override
-    public SupplierProfile createSupplier(SupplierProfile supplierProfile) {
-        return repository.save(supplierProfile);
+    public SupplierProfile createSupplier(SupplierProfile supplier) {
+        supplier.setCreatedAt(LocalDateTime.now());
+        return repository.save(supplier);
     }
 
     @Override
     public SupplierProfile getSupplierById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Supplier not found with id: " + id));
+        return repository.findById(id).orElse(null);
+    }
+
+    @Override
+    public SupplierProfile getBySupplierCode(String supplierCode) {
+        return repository.findBySupplierCode(supplierCode).orElse(null);
     }
 
     @Override
@@ -34,14 +40,11 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
 
     @Override
     public SupplierProfile updateSupplierStatus(Long id, boolean active) {
-        SupplierProfile supplier = getSupplierById(id);
-        supplier.setActive(active);
-        return repository.save(supplier);
-    }
-
-    @Override
-    public SupplierProfile getBySupplierCode(String supplierCode) {
-        return repository.findBySupplierCode(supplierCode)
-                .orElseThrow(() -> new RuntimeException("Supplier not found with code: " + supplierCode));
+        SupplierProfile supplier = repository.findById(id).orElse(null);
+        if (supplier != null) {
+            supplier.setActive(active);
+            return repository.save(supplier);
+        }
+        return null;
     }
 }

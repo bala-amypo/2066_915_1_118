@@ -1,58 +1,38 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.exception.BadRequestException;
 import com.example.demo.model.PurchaseOrderRecord;
-import com.example.demo.model.SupplierProfile;
-import com.example.demo.repository.PurchaseOrderRecordRepository;
-import com.example.demo.repository.SupplierProfileRepository;
+import com.example.demo.repository.PurchaseOrderRepository;
 import com.example.demo.service.PurchaseOrderService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
-    private final PurchaseOrderRecordRepository poRepository;
-    private final SupplierProfileRepository supplierRepository;
+    private final PurchaseOrderRepository repository;
 
-    public PurchaseOrderServiceImpl(PurchaseOrderRecordRepository poRepository,
-                                    SupplierProfileRepository supplierRepository) {
-        this.poRepository = poRepository;
-        this.supplierRepository = supplierRepository;
+    public PurchaseOrderServiceImpl(PurchaseOrderRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public PurchaseOrderRecord createPurchaseOrder(PurchaseOrderRecord po) {
+        return repository.save(po);
+    }
 
-        SupplierProfile supplier = supplierRepository.findById(po.getSupplierId())
-                .orElseThrow(() -> new BadRequestException("Invalid supplierId"));
-
-        if (!supplier.getActive()) {
-            throw new BadRequestException("Supplier must be active");
-        }
-
-        // ✅ FIXED CONDITION (NO null check)
-        if (po.getQuantity() <= 0) {
-            throw new BadRequestException("Quantity must be greater than 0");
-        }
-
-        return poRepository.save(po);
+    @Override
+    public PurchaseOrderRecord getPOById(Long id) {
+        return repository.findById(id).orElse(null);
     }
 
     @Override
     public List<PurchaseOrderRecord> getPOsBySupplier(Long supplierId) {
-        return poRepository.findBySupplierId(supplierId);
-    }
-
-    @Override
-    public Optional<PurchaseOrderRecord> getPOById(Long id) {
-        return poRepository.findById(id);
+        return repository.findBySupplierId(supplierId);
     }
 
     @Override
     public List<PurchaseOrderRecord> getAllPurchaseOrders() {
-        return poRepository.findAll();
+        return repository.findAll();
     }
 }
