@@ -1,33 +1,30 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.DelayScoreRecord;
 import com.example.demo.service.DelayScoreService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/delay-scores")
+@RequestMapping("/api/delay")
+@RequiredArgsConstructor
 public class DelayScoreController {
 
     private final DelayScoreService delayScoreService;
 
-    public DelayScoreController(DelayScoreService delayScoreService) {
-        this.delayScoreService = delayScoreService;
+    @PostMapping("/compute")
+    public ResponseEntity<String> computeDelay() {
+        delayScoreService.calculateDelayScore();
+        return ResponseEntity.ok("Delay scores computed successfully");
     }
 
-    @PostMapping("/compute/{poId}")
-    public DelayScoreRecord compute(@PathVariable Long poId) {
-        return delayScoreService.computeDelayScore(poId);
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllScores() {
+        return ResponseEntity.ok(delayScoreService.getAllScores());
     }
 
     @GetMapping("/supplier/{supplierId}")
-    public List<DelayScoreRecord> getBySupplier(@PathVariable Long supplierId) {
-        return delayScoreService.getScoresBySupplier(supplierId);
-    }
-
-    @GetMapping
-    public List<DelayScoreRecord> getAll() {
-        return delayScoreService.getAllScores();
+    public ResponseEntity<?> getScoresBySupplier(@PathVariable Long supplierId) {
+        return ResponseEntity.ok(delayScoreService.getScoresBySupplier(supplierId));
     }
 }
