@@ -1,12 +1,8 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "supplier_profile", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "supplierCode")
-})
 public class SupplierProfile {
 
     @Id
@@ -14,26 +10,22 @@ public class SupplierProfile {
     private Long id;
 
     private String supplierCode;
+
     private String supplierName;
-    private String email;
-    private String phone;
-    private Boolean active;
-    private LocalDateTime createdAt;
+
+    private String contactNumber;
 
     public SupplierProfile() {
     }
 
-    public SupplierProfile(Long id, String supplierCode, String supplierName,
-                           String email, String phone, Boolean active, LocalDateTime createdAt) {
+    public SupplierProfile(Long id, String supplierCode, String supplierName, String contactNumber) {
         this.id = id;
         this.supplierCode = supplierCode;
         this.supplierName = supplierName;
-        this.email = email;
-        this.phone = phone;
-        this.active = active;
-        this.createdAt = createdAt;
+        this.contactNumber = contactNumber;
     }
 
+    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -43,15 +35,6 @@ public class SupplierProfile {
     public String getSupplierName() { return supplierName; }
     public void setSupplierName(String supplierName) { this.supplierName = supplierName; }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-
-    public String getPhone() { return phone; }
-    public void setPhone(String phone) { this.phone = phone; }
-
-    public Boolean getActive() { return active; }
-    public void setActive(Boolean active) { this.active = active; }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public String getContactNumber() { return contactNumber; }
+    public void setContactNumber(String contactNumber) { this.contactNumber = contactNumber; }
 }

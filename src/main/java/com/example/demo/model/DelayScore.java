@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 public class DelayScore {
@@ -10,28 +9,26 @@ public class DelayScore {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long poId;
-    private Double score;
-    private LocalDateTime createdAt;
+    private Integer score;
 
-    public DelayScore() {}
+    private String description;
 
-    public DelayScore(Long id, Long poId, Double score, LocalDateTime createdAt) {
-        this.id = id;
-        this.poId = poId;
-        this.score = score;
-        this.createdAt = createdAt;
+    public DelayScore() {
     }
 
+    public DelayScore(Long id, Integer score, String description) {
+        this.id = id;
+        this.score = score;
+        this.description = description;
+    }
+
+    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public Long getPoId() { return poId; }
-    public void setPoId(Long poId) { this.poId = poId; }
+    public Integer getScore() { return score; }
+    public void setScore(Integer score) { this.score = score; }
 
-    public Double getScore() { return score; }
-    public void setScore(Double score) { this.score = score; }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 }
