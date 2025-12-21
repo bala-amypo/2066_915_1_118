@@ -4,6 +4,7 @@ import com.example.demo.model.SupplierProfile;
 import com.example.demo.repository.SupplierProfileRepository;
 import com.example.demo.service.SupplierProfileService;
 import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 
 @Service
@@ -24,5 +25,10 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
             return repository.save(sp);
         }
         return null;
+    }
+
+    @Override
+    public SupplierProfile updateSupplier(SupplierProfile profile) {
+        return repository.save(profile);
     }
 }
