@@ -6,8 +6,10 @@ import com.example.demo.repository.DelayScoreRecordRepository;
 import com.example.demo.service.DelayScoreService;
 import org.springframework.stereotype.Service;
 
-import java.time.temporal.ChronoUnit;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class DelayScoreServiceImpl implements DelayScoreService {
@@ -22,7 +24,6 @@ public class DelayScoreServiceImpl implements DelayScoreService {
     public DelayScore calculateDelay(PurchaseOrderRecord po) {
         LocalDate promised = po.getPromisedDate();
         LocalDate actual = po.getActualDeliveryDate();
-
         long delayDays = ChronoUnit.DAYS.between(promised, actual);
 
         DelayScore score = new DelayScore();
@@ -32,5 +33,11 @@ public class DelayScoreServiceImpl implements DelayScoreService {
         score.setDate(LocalDate.now());
 
         return repository.save(score);
+    }
+
+    @Override
+    public List<DelayScore> getScoresBySupplier(Long supplierId) {
+        // dummy implementation, you can filter by supplierId from repository
+        return Collections.emptyList();
     }
 }
