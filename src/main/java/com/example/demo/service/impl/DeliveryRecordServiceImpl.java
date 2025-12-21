@@ -6,7 +6,6 @@ import com.example.demo.service.DeliveryRecordService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DeliveryRecordServiceImpl implements DeliveryRecordService {
@@ -18,22 +17,12 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
     }
 
     @Override
-    public DeliveryRecord createDeliveryRecord(DeliveryRecord record) {
+    public DeliveryRecord recordDelivery(DeliveryRecord record) {
         return deliveryRepository.save(record);
     }
 
     @Override
-    public List<DeliveryRecord> getDeliveriesByPO(Long purchaseOrderId) {
+    public List<DeliveryRecord> getByPurchaseOrderId(Long purchaseOrderId) {
         return deliveryRepository.findByPurchaseOrderId(purchaseOrderId);
-    }
-
-    @Override
-    public Optional<DeliveryRecord> getDeliveryById(Long id) {
-        return deliveryRepository.findById(id);
-    }
-
-    @Override
-    public List<DeliveryRecord> getAllDeliveries() {
-        return deliveryRepository.findAll();
     }
 }
