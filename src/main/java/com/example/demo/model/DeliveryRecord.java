@@ -1,7 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name = "delivery_records")
@@ -11,22 +11,17 @@ public class DeliveryRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long poId;
-    private LocalDate actualDeliveryDate;
-    private Integer deliveredQuantity;
-    private String notes;
+    private Long purchaseOrderId;
+    private Date deliveryDate;
 
     public DeliveryRecord() {}
 
-    public DeliveryRecord(Long poId, LocalDate actualDeliveryDate,
-                          Integer deliveredQuantity, String notes) {
-        this.poId = poId;
-        this.actualDeliveryDate = actualDeliveryDate;
-        this.deliveredQuantity = deliveredQuantity;
-        this.notes = notes;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Long getPoId() { return poId; }
-    public Integer getDeliveredQuantity() { return deliveredQuantity; }
-    public LocalDate getActualDeliveryDate() { return actualDeliveryDate; }
+    public Long getPurchaseOrderId() { return purchaseOrderId; }
+    public void setPurchaseOrderId(Long purchaseOrderId) { this.purchaseOrderId = purchaseOrderId; }
+
+    public Date getDeliveryDate() { return deliveryDate; }
+    public void setDeliveryDate(Date deliveryDate) { this.deliveryDate = deliveryDate; }
 }
