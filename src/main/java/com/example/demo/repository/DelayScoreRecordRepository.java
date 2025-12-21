@@ -2,8 +2,7 @@ package com.example.demo.repository;
 
 import com.example.demo.model.DelayScore;
 import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.List;
+import org.springframework.stereotype.Repository;
 
-public interface DelayScoreRecordRepository extends JpaRepository<DelayScore, Long> {
-    List<DelayScore> findByPoId(Long poId);
-}
+@Repository
+public interface DelayScoreRecordRepository extends JpaRepository<DelayScore, Long> {}
