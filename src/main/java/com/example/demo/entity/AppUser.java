@@ -49,6 +49,9 @@ public class AppUser {
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }
-
-
-heyy you are give the code for this two files DelayScoreRepository.java and PurchaseOrderRepository.java  but i want   DelayScoreRecordRepository.java  PurchaseOrderRecordRepository.java   thats what giveninthe question
+AppUser.java,
+DelayScoreRecord.java,
+DeliveryRecord.java,
+PurchaseOrderRecord.java,
+SupplierProfile.java,
+SupplierRiskAlert.java
