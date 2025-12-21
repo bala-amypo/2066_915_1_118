@@ -4,6 +4,6 @@ import com.example.demo.model.DelayScore;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
-public interface DelayScoreRepository extends JpaRepository<DelayScore, Long> {
+public interface DelayScoreRecordRepository extends JpaRepository<DelayScore, Long> {
     List<DelayScore> findByPoId(Long poId);
 }
