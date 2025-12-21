@@ -1,26 +1,18 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.util.Optional;
 
 @Entity
-@Table(name = "suppliers")
 public class SupplierProfile {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String name;
     private boolean active;
 
-    public SupplierProfile() {}
-
+    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-
-    public boolean isActive() { return active; }
+    public boolean getActive() { return active; }
     public void setActive(boolean active) { this.active = active; }
 }
