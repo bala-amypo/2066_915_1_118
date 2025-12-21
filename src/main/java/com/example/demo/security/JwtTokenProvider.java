@@ -9,31 +9,49 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    private final String secret = "secret-key";
-    private final long validity = 3600000;
+    private final String secret = "my-secret-key";
+    private final long validityInMs = 3600000; // 1 hour
 
     public String generateToken(AppUser user) {
+        Claims claims = Jwts.claims().setSubject(user.getEmail());
+        claims.put("role", user.getRole());
+        claims.put("userId", user.getId());
+
+        Date now = new Date();
+        Date expiry = new Date(now.getTime() + validityInMs);
+
         return Jwts.builder()
-                .setSubject(user.getEmail())
-                .claim("role", user.getRole())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + validity))
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(expiry)
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
-    }
-
-    public String getEmailFromToken(String token) {
-        return Jwts.parser().setSigningKey(secret)
-                .parseClaimsJws(token)
-                .getBody().getSubject();
     }
 
     public boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
             return true;
-        } catch (Exception e) {
+        } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
+    }
+
+    public String getEmailFromToken(String token) {
+        return Jwts.parser()
+                .setSigningKey(secret)
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+    }
+
+    // ✅ FIXED METHOD (THIS SOLVES ERROR 4)
+    public String getRoleFromToken(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(secret)
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.get("role", String.class);
     }
 }
