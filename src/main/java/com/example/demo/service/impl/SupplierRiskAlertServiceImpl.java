@@ -1,16 +1,33 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
 import com.example.demo.model.SupplierRiskAlert;
+import com.example.demo.repository.SupplierRiskAlertRepository;
+import com.example.demo.service.SupplierRiskAlertService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface SupplierRiskAlertService {
+@Service
+public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
 
-    SupplierRiskAlert createAlert(SupplierRiskAlert alert);
+    private final SupplierRiskAlertRepository alertRepository;
 
-    List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId);
+    public SupplierRiskAlertServiceImpl(SupplierRiskAlertRepository alertRepository) {
+        this.alertRepository = alertRepository;
+    }
 
-    SupplierRiskAlert resolveAlert(Long alertId);
+    @Override
+    public SupplierRiskAlert createAlert(SupplierRiskAlert alert) {
+        return alertRepository.save(alert);
+    }
 
-    List<SupplierRiskAlert> getAllAlerts();
+    @Override
+    public List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId) {
+        return alertRepository.findBySupplierId(supplierId);
+    }
+
+    @Override
+    public List<SupplierRiskAlert> getAllAlerts() {
+        return alertRepository.findAll();
+    }
 }

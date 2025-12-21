@@ -1,19 +1,39 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
 import com.example.demo.model.SupplierProfile;
+import com.example.demo.repository.SupplierProfileRepository;
+import com.example.demo.service.SupplierProfileService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface SupplierProfileService {
+@Service
+public class SupplierProfileServiceImpl implements SupplierProfileService {
 
-    SupplierProfile createSupplier(SupplierProfile supplier);
+    private final SupplierProfileRepository supplierRepository;
 
-    SupplierProfile getSupplierById(Long id);
+    public SupplierProfileServiceImpl(SupplierProfileRepository supplierRepository) {
+        this.supplierRepository = supplierRepository;
+    }
 
-    Optional<SupplierProfile> getBySupplierCode(String supplierCode);
+    @Override
+    public SupplierProfile createSupplier(SupplierProfile supplier) {
+        return supplierRepository.save(supplier);
+    }
 
-    List<SupplierProfile> getAllSuppliers();
+    @Override
+    public Optional<SupplierProfile> getSupplierById(Long id) {
+        return supplierRepository.findById(id);
+    }
 
-    SupplierProfile updateSupplierStatus(Long id, boolean active);
+    @Override
+    public List<SupplierProfile> getAllSuppliers() {
+        return supplierRepository.findAll();
+    }
+
+    @Override
+    public SupplierProfile updateSupplier(SupplierProfile supplier) {
+        return supplierRepository.save(supplier);
+    }
 }

@@ -1,49 +1,12 @@
-package com.example.demo.service.impl;
+package com.example.demo.service;
 
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.SupplierProfile;
-import com.example.demo.repository.SupplierProfileRepository;
-import com.example.demo.service.SupplierProfileService;
-
 import java.util.List;
 import java.util.Optional;
 
-public class SupplierProfileServiceImpl implements SupplierProfileService {
-
-    private final SupplierProfileRepository supplierProfileRepository;
-
-    public SupplierProfileServiceImpl(SupplierProfileRepository supplierProfileRepository) {
-        this.supplierProfileRepository = supplierProfileRepository;
-    }
-
-    @Override
-    public SupplierProfile createSupplier(SupplierProfile supplier) {
-        if (supplierProfileRepository.findBySupplierCode(supplier.getSupplierCode()).isPresent()) {
-            throw new IllegalArgumentException("Supplier code already exists");
-        }
-        return supplierProfileRepository.save(supplier);
-    }
-
-    @Override
-    public SupplierProfile getSupplierById(Long id) {
-        return supplierProfileRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
-    }
-
-    @Override
-    public Optional<SupplierProfile> getBySupplierCode(String supplierCode) {
-        return supplierProfileRepository.findBySupplierCode(supplierCode);
-    }
-
-    @Override
-    public List<SupplierProfile> getAllSuppliers() {
-        return supplierProfileRepository.findAll();
-    }
-
-    @Override
-    public SupplierProfile updateSupplierStatus(Long id, boolean active) {
-        SupplierProfile supplier = getSupplierById(id);
-        supplier.setActive(active);
-        return supplierProfileRepository.save(supplier);
-    }
+public interface SupplierProfileService {
+    SupplierProfile createSupplier(SupplierProfile supplier);
+    Optional<SupplierProfile> getSupplierById(Long id);
+    List<SupplierProfile> getAllSuppliers();
+    SupplierProfile updateSupplier(SupplierProfile supplier);
 }
