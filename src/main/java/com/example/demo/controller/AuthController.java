@@ -2,28 +2,23 @@ package com.example.demo.controller;
 
 import com.example.demo.model.AppUser;
 import com.example.demo.service.AuthService;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
-@Tag(name = "Authentication")
+@RequestMapping("/api/auth")
 public class AuthController {
 
-    private final AuthService authService;
-
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
+    @Autowired
+    private AuthService authService;
 
     @PostMapping("/register")
-    public AppUser register(@RequestBody AppUser user) {
+    public AppUser registerUser(@RequestBody AppUser user) {
         return authService.registerUser(user);
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam String username,
-                        @RequestParam String password) {
-        return authService.login(username, password);
+    public String loginUser(@RequestBody AppUser user) {
+        return authService.loginUser(user);
     }
 }

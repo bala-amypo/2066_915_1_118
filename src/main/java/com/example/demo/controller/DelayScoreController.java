@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.DelayScore;
+import com.example.demo.model.DelayScoreRecord;
 import com.example.demo.service.DelayScoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,30 +12,30 @@ import java.util.List;
 public class DelayScoreController {
 
     @Autowired
-    private DelayScoreService delayScoreService;
-
-    @PostMapping
-    public DelayScore createDelayScore(@RequestBody DelayScore delayScore) {
-        return delayScoreService.createDelayScore(delayScore);
-    }
+    private DelayScoreService service;
 
     @GetMapping
-    public List<DelayScore> getAllDelayScores() {
-        return delayScoreService.getAllDelayScores();
+    public List<DelayScoreRecord> getAllDelayScores() {
+        return service.getAllDelayScores();
     }
 
     @GetMapping("/{id}")
-    public DelayScore getDelayScoreById(@PathVariable Long id) {
-        return delayScoreService.getDelayScoreById(id);
+    public DelayScoreRecord getDelayScoreById(@PathVariable Long id) {
+        return service.getDelayScoreById(id);
+    }
+
+    @PostMapping
+    public DelayScoreRecord createDelayScore(@RequestBody DelayScoreRecord record) {
+        return service.createDelayScore(record);
     }
 
     @PutMapping("/{id}")
-    public DelayScore updateDelayScore(@PathVariable Long id, @RequestBody DelayScore delayScore) {
-        return delayScoreService.updateDelayScore(id, delayScore);
+    public DelayScoreRecord updateDelayScore(@PathVariable Long id, @RequestBody DelayScoreRecord record) {
+        return service.updateDelayScore(id, record);
     }
 
     @DeleteMapping("/{id}")
     public void deleteDelayScore(@PathVariable Long id) {
-        delayScoreService.deleteDelayScore(id);
+        service.deleteDelayScore(id);
     }
 }
