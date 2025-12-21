@@ -28,12 +28,12 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         SupplierProfile supplier = supplierRepository.findById(po.getSupplierId())
                 .orElseThrow(() -> new BadRequestException("Invalid supplierId"));
 
-        if (!Boolean.TRUE.equals(supplier.getActive())) {
+        if (!supplier.getActive()) {
             throw new BadRequestException("Supplier must be active");
         }
 
         if (po.getQuantity() == null || po.getQuantity() <= 0) {
-            throw new BadRequestException("Invalid quantity");
+            throw new BadRequestException("Quantity must be greater than 0");
         }
 
         return poRepository.save(po);

@@ -2,28 +2,39 @@ package com.example.demo.controller;
 
 import com.example.demo.model.SupplierProfile;
 import com.example.demo.service.SupplierProfileService;
-import org.springframework.http.ResponseEntity;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/supplier")
+@RequestMapping("/api/suppliers")
+@Tag(name = "Supplier Management")
 public class SupplierProfileController {
 
-    private final SupplierProfileService supplierProfileService;
+    private final SupplierProfileService service;
 
-    public SupplierProfileController(SupplierProfileService supplierProfileService) {
-        this.supplierProfileService = supplierProfileService;
+    public SupplierProfileController(SupplierProfileService service) {
+        this.service = service;
+    }
+
+    @PostMapping
+    public SupplierProfile create(@RequestBody SupplierProfile supplier) {
+        return service.createSupplier(supplier);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SupplierProfile> getSupplier(@PathVariable Long id) {
-        SupplierProfile sp = supplierProfileService.updateSupplierStatus(id, true); // dummy fetch
-        return ResponseEntity.ok(sp);
+    public SupplierProfile getById(@PathVariable Long id) {
+        return service.getSupplierById(id);
     }
 
-    @PostMapping("/updateStatus")
-    public ResponseEntity<SupplierProfile> updateStatus(@RequestParam Long id, @RequestParam boolean active) {
-        SupplierProfile sp = supplierProfileService.updateSupplierStatus(id, active);
-        return ResponseEntity.ok(sp);
+    @GetMapping
+    public List<SupplierProfile> getAll() {
+        return service.getAllSuppliers();
+    }
+
+    @PutMapping("/{id}/status")
+    public SupplierProfile updateStatus(@PathVariable Long id, @RequestParam boolean active) {
+        return service.updateSupplierStatus(id, active);
     }
 }

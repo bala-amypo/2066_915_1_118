@@ -2,38 +2,39 @@ package com.example.demo.controller;
 
 import com.example.demo.model.PurchaseOrderRecord;
 import com.example.demo.service.PurchaseOrderService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/purchase-orders")
+@Tag(name = "Purchase Orders")
 public class PurchaseOrderController {
 
-    private final PurchaseOrderService purchaseOrderService;
+    private final PurchaseOrderService service;
 
-    public PurchaseOrderController(PurchaseOrderService purchaseOrderService) {
-        this.purchaseOrderService = purchaseOrderService;
+    public PurchaseOrderController(PurchaseOrderService service) {
+        this.service = service;
     }
 
     @PostMapping
     public PurchaseOrderRecord create(@RequestBody PurchaseOrderRecord po) {
-        return purchaseOrderService.createPurchaseOrder(po);
+        return service.createPurchaseOrder(po);
     }
 
     @GetMapping("/{id}")
-    public Optional<PurchaseOrderRecord> getById(@PathVariable Long id) {
-        return purchaseOrderService.getPOById(id);
+    public PurchaseOrderRecord getById(@PathVariable Long id) {
+        return service.getPOById(id).orElse(null);
     }
 
     @GetMapping("/supplier/{supplierId}")
     public List<PurchaseOrderRecord> getBySupplier(@PathVariable Long supplierId) {
-        return purchaseOrderService.getPOsBySupplier(supplierId);
+        return service.getPOsBySupplier(supplierId);
     }
 
     @GetMapping
     public List<PurchaseOrderRecord> getAll() {
-        return purchaseOrderService.getAllPurchaseOrders();
+        return service.getAllPurchaseOrders();
     }
 }
