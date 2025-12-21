@@ -1,40 +1,41 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.DelayScoreRecord;
+import com.example.demo.model.DelayScore;
 import com.example.demo.service.DelayScoreService;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/delay-scores")
-@Tag(name = "Delay Scores")
 public class DelayScoreController {
 
-    private final DelayScoreService delayScoreService;
+    @Autowired
+    private DelayScoreService delayScoreService;
 
-    public DelayScoreController(DelayScoreService delayScoreService) {
-        this.delayScoreService = delayScoreService;
-    }
-
-    @PostMapping("/compute/{poId}")
-    public DelayScoreRecord compute(@PathVariable Long poId) {
-        return delayScoreService.computeDelayScore(poId);
-    }
-
-    @GetMapping("/supplier/{supplierId}")
-    public List<DelayScoreRecord> getBySupplier(@PathVariable Long supplierId) {
-        return delayScoreService.getScoresBySupplier(supplierId);
-    }
-
-    @GetMapping("/{id}")
-    public DelayScoreRecord getById(@PathVariable Long id) {
-        return delayScoreService.getScoreById(id);
+    @PostMapping
+    public DelayScore createDelayScore(@RequestBody DelayScore delayScore) {
+        return delayScoreService.createDelayScore(delayScore);
     }
 
     @GetMapping
-    public List<DelayScoreRecord> getAll() {
-        return delayScoreService.getAllScores();
+    public List<DelayScore> getAllDelayScores() {
+        return delayScoreService.getAllDelayScores();
+    }
+
+    @GetMapping("/{id}")
+    public DelayScore getDelayScoreById(@PathVariable Long id) {
+        return delayScoreService.getDelayScoreById(id);
+    }
+
+    @PutMapping("/{id}")
+    public DelayScore updateDelayScore(@PathVariable Long id, @RequestBody DelayScore delayScore) {
+        return delayScoreService.updateDelayScore(id, delayScore);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteDelayScore(@PathVariable Long id) {
+        delayScoreService.deleteDelayScore(id);
     }
 }
