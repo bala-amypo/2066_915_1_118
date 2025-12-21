@@ -1,59 +1,46 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.LoginRequest;
-import com.example.demo.dto.RegisterRequest;
-import com.example.demo.exception.BadRequestException;
 import com.example.demo.model.AppUser;
 import com.example.demo.repository.AppUserRepository;
-import com.example.demo.security.CustomUserDetailsService;
 import com.example.demo.security.JwtTokenProvider;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
-    private final CustomUserDetailsService userDetailsService;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final AppUserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final AppUserRepository appUserRepository;
-
-    public AuthController(CustomUserDetailsService userDetailsService,
-                          JwtTokenProvider jwtTokenProvider,
-                          PasswordEncoder passwordEncoder,
-                          AppUserRepository appUserRepository) {
-        this.userDetailsService = userDetailsService;
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.passwordEncoder = passwordEncoder;
-        this.appUserRepository = appUserRepository;
-    }
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/register")
-    public AppUser register(@RequestBody RegisterRequest request) {
-
-        if (appUserRepository.existsByEmail(request.getEmail())) {
-            throw new BadRequestException("Email already exists");
+    public ResponseEntity<String> register(@RequestBody AppUser user) {
+        if (userRepository.existsByEmail(user.getEmail())) {
+            return ResponseEntity.badRequest().body("Email already exists");
         }
 
-        AppUser user = new AppUser();
-        user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(request.getRole());
-
-        return appUserRepository.save(user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+        return ResponseEntity.ok("User registered successfully");
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest request) {
+    public ResponseEntity<String> login(@RequestBody AppUser user) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
+        );
 
-        AppUser user = appUserRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new BadRequestException("Invalid credentials"));
+        String token = jwtTokenProvider.generateToken(
+                jwtTokenProvider.loadUserByUsername(user.getEmail())
+        );
 
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new BadRequestException("Invalid credentials");
-        }
-
-        return jwtTokenProvider.generateToken(user);
+        return ResponseEntity.ok(token);
     }
 }
