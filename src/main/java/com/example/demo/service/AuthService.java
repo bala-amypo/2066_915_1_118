@@ -1,8 +1,9 @@
 package com.example.demo.service;
 
-import com.example.demo.model.AppUser;
+import com.example.demo.dto.LoginRequest;
 
 public interface AuthService {
-    AppUser registerUser(AppUser user);
-    String loginUser(AppUser user);
+
+    String loginUser(LoginRequest request);
+
 }
