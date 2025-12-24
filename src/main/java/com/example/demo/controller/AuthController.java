@@ -1,24 +1,28 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.LoginRequest;
+import com.example.demo.dto.RegisterRequest;
 import com.example.demo.model.AppUser;
 import com.example.demo.service.AuthService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
-    private AuthService authService;
+    private final AuthService authService;
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
 
     @PostMapping("/register")
-    public AppUser registerUser(@RequestBody AppUser user) {
-        return authService.registerUser(user);
+    public AppUser register(@RequestBody RegisterRequest request) {
+        return authService.registerUser(request);
     }
 
     @PostMapping("/login")
-    public String loginUser(@RequestBody AppUser user) {
-        return authService.loginUser(user);
+    public String login(@RequestBody LoginRequest request) {
+        return authService.loginUser(request);
     }
 }
