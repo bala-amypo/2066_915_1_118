@@ -4,19 +4,18 @@ import com.example.demo.model.AppUser;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
-
 import java.security.Key;
 import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
 
-    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256); // Random secure key
+    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private final long validityInMs = 3600000; // 1 hour
 
     public String generateToken(AppUser user) {
         Claims claims = Jwts.claims().setSubject(user.getEmail());
-        claims.put("role", user.getRole());
+        claims.put("role", user.getRole()); // ✅ now works
         claims.put("userId", user.getId());
 
         Date now = new Date();
