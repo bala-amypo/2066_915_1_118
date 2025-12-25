@@ -1,10 +1,8 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "supplier_risk_alerts")
 public class SupplierRiskAlert {
 
     @Id
@@ -14,16 +12,47 @@ public class SupplierRiskAlert {
     private Long supplierId;
     private String alertLevel;
     private String message;
-    private Boolean resolved = false;
-    private LocalDateTime alertDate;
+    private boolean resolved = false;
 
     public SupplierRiskAlert() {}
 
-    @PrePersist
-    void onCreate() {
-        this.alertDate = LocalDateTime.now();
-        if (resolved == null) resolved = false;
+    public Long getId() {
+        return id;
     }
 
-    // getters & setters
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(Long supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    public String getAlertLevel() {
+        return alertLevel;
+    }
+
+    public void setAlertLevel(String alertLevel) {
+        this.alertLevel = alertLevel;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public boolean isResolved() {
+        return resolved;
+    }
+
+    public void setResolved(boolean resolved) {
+        this.resolved = resolved;
+    }
 }
