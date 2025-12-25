@@ -1,42 +1,29 @@
-package com.example.demo.service.impl;
-
-import com.example.demo.model.SupplierRiskAlert;
-import com.example.demo.repository.SupplierRiskAlertRepository;
-import com.example.demo.service.SupplierRiskAlertService;
-import com.example.demo.exception.ResourceNotFoundException;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-
 @Service
-public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
+public class SupplierRiskAlertServiceImpl {
 
-    private final SupplierRiskAlertRepository alertRepo;
+    private final SupplierRiskAlertRepository repo;
 
-    public SupplierRiskAlertServiceImpl(SupplierRiskAlertRepository alertRepo) {
-        this.alertRepo = alertRepo;
+    public SupplierRiskAlertServiceImpl(SupplierRiskAlertRepository repo) {
+        this.repo = repo;
     }
 
-    @Override
-    public SupplierRiskAlert raiseRiskAlert(Long supplierId, String level, String message) {
-        SupplierRiskAlert alert = new SupplierRiskAlert();
-        alert.setSupplierId(supplierId);
-        alert.setAlertLevel(level);
-        alert.setMessage(message);
-        alert.setResolved(false);
-        return alertRepo.save(alert);
+    public SupplierRiskAlert createAlert(SupplierRiskAlert a) {
+        a.setResolved(false);
+        return repo.save(a);
     }
 
-    @Override
-    public List<SupplierRiskAlert> getOpenAlerts() {
-        return alertRepo.findByResolvedFalse();
+    public List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId) {
+        return repo.findBySupplierId(supplierId);
     }
 
-    @Override
-    public SupplierRiskAlert resolveAlert(Long alertId) {
-        SupplierRiskAlert alert = alertRepo.findById(alertId)
-                .orElseThrow(() -> new ResourceNotFoundException("Alert not found"));
-        alert.setResolved(true);
-        return alertRepo.save(alert);
+    public SupplierRiskAlert resolveAlert(Long id) {
+        SupplierRiskAlert a = repo.findById(id)
+                .orElseThrow(() -> new BadRequestException("Alert not found"));
+        a.setResolved(true);
+        return repo.save(a);
+    }
+
+    public List<SupplierRiskAlert> getAllAlerts() {
+        return repo.findAll();
     }
 }
