@@ -1,0 +1,10 @@
+package com.example.demo.service;
+
+import com.example.demo.dto.*;
+
+public interface AuthService {
+
+    void register(RegisterRequest request);
+
+    AuthResponse login(LoginRequest request);
+}
