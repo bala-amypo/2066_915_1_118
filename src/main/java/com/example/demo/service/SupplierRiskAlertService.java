@@ -1,13 +1,15 @@
-package com.example.demo.service;
+package com.example.demo.dto;
 
-import com.example.demo.model.SupplierRiskAlert;
-import java.util.List;
+import com.example.demo.model.Role;
 
-public interface SupplierRiskAlertService {
+public class RegisterRequest {
 
-    SupplierRiskAlert raiseRiskAlert(Long supplierId, String level, String message);
+    private String username;
+    private String email;
+    private String password;
+    private Role role;
 
-    List<SupplierRiskAlert> getOpenAlerts();
+    public RegisterRequest() {}
 
-    SupplierRiskAlert resolveAlert(Long alertId);
+    // getters & setters
 }
