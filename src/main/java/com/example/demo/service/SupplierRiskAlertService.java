@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface SupplierRiskAlertService {
 
-    SupplierRiskAlert createAlert(Long supplierId, String level, String message);
+    SupplierRiskAlert raiseRiskAlert(Long supplierId, String level, String message);
 
     List<SupplierRiskAlert> getOpenAlerts();
 
