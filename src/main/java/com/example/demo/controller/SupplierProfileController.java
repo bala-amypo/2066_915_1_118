@@ -1,29 +1,36 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.Supplier;
-import com.example.demo.service.SupplierService;
-import org.springframework.http.ResponseEntity;
+import com.example.demo.entity.SupplierProfile;
+import com.example.demo.service.SupplierProfileService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/supplier")
-public class SupplierController {
+@RequestMapping("/api/suppliers")
+public class SupplierProfileController {
 
-    private final SupplierService service;
-
-    public SupplierController(SupplierService service) {
-        this.service = service;
-    }
+    @Autowired
+    private SupplierProfileService service;
 
     @PostMapping
-    public ResponseEntity<Supplier> saveSupplier(@RequestBody Supplier supplier) {
-        return ResponseEntity.ok(service.saveSupplier(supplier));
+    public SupplierProfile createSupplier(@RequestBody SupplierProfile supplierProfile) {
+        return service.saveSupplierProfile(supplierProfile);
     }
 
     @GetMapping
-    public ResponseEntity<List<Supplier>> getAllSuppliers() {
-        return ResponseEntity.ok(service.getAllSuppliers());
+    public List<SupplierProfile> getAllSuppliers() {
+        return service.getAllSuppliers();
+    }
+
+    @GetMapping("/{id}")
+    public SupplierProfile getSupplier(@PathVariable Long id) {
+        return service.getSupplierById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteSupplier(@PathVariable Long id) {
+        service.deleteSupplier(id);
     }
 }
