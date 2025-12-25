@@ -1,30 +1,11 @@
-package com.example.demo.model;
+package com.example.demo.service;
 
-import jakarta.persistence.*;
-import java.time.LocalDate;
+import com.example.demo.model.DeliveryRecord;
 
-@Entity
-@Table(name = "delivery_records")
-public class DeliveryRecord {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+import java.util.List;
 
-    @Column(nullable = false)
-    private Long poId;
-
-    private LocalDate actualDeliveryDate;
-    private Integer deliveredQuantity;
-    private String notes;
-
-    public DeliveryRecord() {}
-    public DeliveryRecord(Long poId, LocalDate actualDeliveryDate, Integer deliveredQuantity, String notes) {
-        this.poId = poId;
-        this.actualDeliveryDate = actualDeliveryDate;
-        this.deliveredQuantity = deliveredQuantity;
-        this.notes = notes;
-    }
-
-    // getters & setters
-    // ...
+public interface DeliveryRecordService {
+    DeliveryRecord recordDelivery(DeliveryRecord delivery);
+    List<DeliveryRecord> getDeliveriesByPO(Long poId);
+    List<DeliveryRecord> getAllDeliveries();
 }

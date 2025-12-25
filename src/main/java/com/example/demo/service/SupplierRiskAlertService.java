@@ -1,33 +1,12 @@
-package com.example.demo.model;
+package com.example.demo.service;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import com.example.demo.model.SupplierRiskAlert;
 
-@Entity
-@Table(name = "supplier_risk_alerts")
-public class SupplierRiskAlert {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+import java.util.List;
 
-    private Long supplierId;
-    private String alertLevel;
-    private String message;
-    private LocalDateTime alertDate;
-    private Boolean resolved = false;
-
-    public SupplierRiskAlert() {}
-    public SupplierRiskAlert(Long supplierId, String alertLevel, String message) {
-        this.supplierId = supplierId;
-        this.alertLevel = alertLevel;
-        this.message = message;
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        alertDate = LocalDateTime.now();
-    }
-
-    // getters & setters
-    // ...
+public interface SupplierRiskAlertService {
+    SupplierRiskAlert createAlert(SupplierRiskAlert alert);
+    List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId);
+    SupplierRiskAlert resolveAlert(Long alertId);
+    List<SupplierRiskAlert> getAllAlerts();
 }
