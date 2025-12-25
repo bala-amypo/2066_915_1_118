@@ -1,18 +1,32 @@
-package com.example.demo.entity;
+package com.example.demo.controller;
 
-import jakarta.persistence.*;
-import lombok.Data;
+import com.example.demo.entity.SupplierRiskAlert;
+import com.example.demo.service.SupplierRiskAlertService;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
-@Entity
-@Data
-public class SupplierRiskAlert {
+@RestController
+@RequestMapping("/alerts")
+public class SupplierRiskAlertController {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private final SupplierRiskAlertService alertService;
 
-    private Long supplierId;
-    private String message;
-    private boolean resolved;   // REQUIRED FOR setResolved(boolean)
+    public SupplierRiskAlertController(SupplierRiskAlertService alertService) {
+        this.alertService = alertService;
+    }
 
+    @GetMapping
+    public List<SupplierRiskAlert> getAll() {
+        return alertService.getAll();
+    }
+
+    @PostMapping
+    public SupplierRiskAlert create(@RequestBody SupplierRiskAlert alert) {
+        return alertService.create(alert);
+    }
+
+    @PutMapping("/{id}/resolve")
+    public SupplierRiskAlert resolve(@PathVariable Long id) {
+        return alertService.markResolved(id);
+    }
 }

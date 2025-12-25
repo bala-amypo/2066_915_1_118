@@ -2,28 +2,31 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.DeliveryRecord;
 import com.example.demo.service.DeliveryRecordService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/delivery")
+@RequestMapping("/delivery")
 public class DeliveryRecordController {
 
-    private final DeliveryRecordService service;
+    private final DeliveryRecordService deliveryService;
 
-    public DeliveryRecordController(DeliveryRecordService service) {
-        this.service = service;
-    }
-
-    @PostMapping
-    public ResponseEntity<DeliveryRecord> saveRecord(@RequestBody DeliveryRecord record) {
-        return ResponseEntity.ok(service.saveRecord(record));
+    public DeliveryRecordController(DeliveryRecordService deliveryService) {
+        this.deliveryService = deliveryService;
     }
 
     @GetMapping
-    public ResponseEntity<List<DeliveryRecord>> getAllRecords() {
-        return ResponseEntity.ok(service.getAllRecords());
+    public List<DeliveryRecord> getAll() {
+        return deliveryService.getAllRecords();
+    }
+
+    @PostMapping
+    public DeliveryRecord create(@RequestBody DeliveryRecord record) {
+        return deliveryService.saveRecord(record);
+    }
+
+    @GetMapping("/po/{poId}")
+    public List<DeliveryRecord> getByPo(@PathVariable Long poId) {
+        return deliveryService.getRecordsByPo(poId);
     }
 }
