@@ -1,32 +1,53 @@
+package com.example.demo.service.impl;
+
+import com.example.demo.model.SupplierProfile;
+import com.example.demo.repository.SupplierProfileRepository;
+import com.example.demo.service.SupplierProfileService;
+
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
 @Service
-public class SupplierProfileServiceImpl {
+public class SupplierProfileServiceImpl implements SupplierProfileService {
 
-    private final SupplierProfileRepository repo;
+    private final SupplierProfileRepository supplierProfileRepository;
 
-    public SupplierProfileServiceImpl(SupplierProfileRepository repo) {
-        this.repo = repo;
+    public SupplierProfileServiceImpl(SupplierProfileRepository supplierProfileRepository) {
+        this.supplierProfileRepository = supplierProfileRepository;
     }
 
-    public SupplierProfile createSupplier(SupplierProfile s) {
-        return repo.save(s);
+    @Override
+    public SupplierProfile createSupplier(SupplierProfile supplierProfile) {
+        return supplierProfileRepository.save(supplierProfile);
     }
 
-    public SupplierProfile getSupplierById(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
+    @Override
+    public SupplierProfile updateSupplier(Long id, SupplierProfile supplierProfile) {
+        SupplierProfile existing = supplierProfileRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Supplier not found"));
+
+        existing.setSupplierName(supplierProfile.getSupplierName());
+        existing.setEmail(supplierProfile.getEmail());
+        existing.setPhone(supplierProfile.getPhone());
+        existing.setRiskLevel(supplierProfile.getRiskLevel());
+
+        return supplierProfileRepository.save(existing);
     }
 
+    @Override
     public List<SupplierProfile> getAllSuppliers() {
-        return repo.findAll();
+        return supplierProfileRepository.findAll();
     }
 
-    public SupplierProfile updateSupplierStatus(Long id, boolean active) {
-        SupplierProfile s = getSupplierById(id);
-        s.setActive(active);
-        return repo.save(s);
+    @Override
+    public Optional<SupplierProfile> getSupplierById(Long id) {
+        return supplierProfileRepository.findById(id);
     }
 
-    public Optional<SupplierProfile> getBySupplierCode(String code) {
-        return repo.findBySupplierCode(code);
+    @Override
+    public void deleteSupplier(Long id) {
+        supplierProfileRepository.deleteById(id);
     }
 }
