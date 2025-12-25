@@ -1,33 +1,17 @@
-package com.example.demo.model;
+package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import lombok.Data;
 
 @Entity
-@Table(name = "supplier_risk_alerts")
+@Data
 public class SupplierRiskAlert {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long supplierId;
-    private String alertLevel;
     private String message;
-    private LocalDateTime alertDate;
-    private Boolean resolved = false;
-
-    public SupplierRiskAlert() {}
-    public SupplierRiskAlert(Long supplierId, String alertLevel, String message) {
-        this.supplierId = supplierId;
-        this.alertLevel = alertLevel;
-        this.message = message;
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        alertDate = LocalDateTime.now();
-    }
-
-    // getters & setters
-    // ...
+    private boolean resolved;
 }

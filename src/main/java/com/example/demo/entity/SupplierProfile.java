@@ -12,7 +12,7 @@ public class SupplierProfile {
     private Long id;
 
     private String supplierName;
-    private String email;
+    private String contactEmail;
+    private String phone;
     private String location;
-    private int rating;
 }
