@@ -13,6 +13,6 @@ public class DeliveryRecord {
     private Long id;
 
     private Long poId;
-    private LocalDate promisedDeliveryDate;
-    private LocalDate actualDeliveryDate;
+    private LocalDate deliveredDate;
+    private int quantityDelivered;
 }

@@ -13,8 +13,9 @@ public class PurchaseOrderRecord {
     private Long id;
 
     private Long supplierId;
-    private String poNumber;
+    private String itemName;
     private int quantity;
-
-    private LocalDate promisedDeliveryDate;
+    private LocalDate orderDate;
+    private LocalDate expectedDeliveryDate;
+    private String status;
 }
