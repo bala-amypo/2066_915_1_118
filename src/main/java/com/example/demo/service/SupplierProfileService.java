@@ -1,42 +1,14 @@
-package com.example.demo.model;
+package com.example.demo.service;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import com.example.demo.model.SupplierProfile;
 
-@Entity
-@Table(name = "supplier_profiles", uniqueConstraints = @UniqueConstraint(columnNames = "supplierCode"))
-public class SupplierProfile {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+import java.util.List;
+import java.util.Optional;
 
-    @Column(nullable = false, unique = true)
-    private String supplierCode;
-
-    @Column(nullable = false)
-    private String supplierName;
-
-    private String email;
-    private String phone;
-
-    private Boolean active = true;
-
-    private LocalDateTime createdAt;
-
-    public SupplierProfile() {}
-    public SupplierProfile(String supplierCode, String supplierName, String email, String phone, Boolean active) {
-        this.supplierCode = supplierCode;
-        this.supplierName = supplierName;
-        this.email = email;
-        this.phone = phone;
-        this.active = active != null ? active : true;
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-    }
-
-    // getters & setters
-    // ...
+public interface SupplierProfileService {
+    SupplierProfile createSupplier(SupplierProfile supplier);
+    SupplierProfile getSupplierById(Long id);
+    Optional<SupplierProfile> getBySupplierCode(String supplierCode);
+    List<SupplierProfile> getAllSuppliers();
+    SupplierProfile updateSupplierStatus(Long id, boolean active);
 }
