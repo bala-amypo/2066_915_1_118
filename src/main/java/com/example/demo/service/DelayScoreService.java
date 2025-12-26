@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
-import java.util.Map;
+import com.example.demo.dto.DelayScoreResponse;
+import java.util.List;
 
 public interface DelayScoreService {
-    Map<Long, Integer> calculateDelayScores();
+    DelayScoreResponse computeDelayScore(Long supplierId);
+    List<DelayScoreResponse> getScoresBySupplier(Long supplierId);
 }
