@@ -5,14 +5,13 @@ import lombok.Data;
 
 @Entity
 @Data
-public class PurchaseOrder {
+public class PurchaseOrderRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long supplierId;
-    private String itemName;
-    private int quantity;
-    private String status;
+    private Long purchaseOrderId;
+    private String deliveryDate;
+    private boolean delivered;
 }
