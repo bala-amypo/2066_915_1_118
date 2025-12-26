@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.example</groupId>
@@ -40,7 +41,7 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-        <!-- Database: H2 + MySQL -->
+        <!-- Databases -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -93,7 +94,7 @@
             <scope>test</scope>
             <exclusions>
                 <exclusion>
-                    <!-- IMPORTANT: Disable JUnit so ONLY TestNG runs -->
+                    <!-- Disable JUnit so ONLY TestNG runs -->
                     <groupId>org.junit.vintage</groupId>
                     <artifactId>junit-vintage-engine</artifactId>
                 </exclusion>
@@ -118,19 +119,22 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-            <!-- TestNG Execution -->
+            <!-- Maven Surefire Plugin for TestNG -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <testNGArtifactName>org.testng:testng</testNGArtifactName>
                     <suiteXmlFiles>
-                        <!-- This MUST match hidden test suite -->
+                        <!-- Make sure this path matches your testng.xml location -->
                         <suiteXmlFile>testng.xml</suiteXmlFile>
                     </suiteXmlFiles>
+                    <testNGArtifactName>org.testng:testng</testNGArtifactName>
+                    <forkCount>1</forkCount>
+                    <reuseForks>true</reuseForks>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 
