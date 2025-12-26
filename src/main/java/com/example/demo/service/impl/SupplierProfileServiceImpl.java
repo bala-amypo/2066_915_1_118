@@ -1,12 +1,11 @@
 package com.example.demo.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import com.example.demo.model.SupplierProfile;
 import com.example.demo.repository.SupplierProfileRepository;
 import com.example.demo.service.SupplierProfileService;
-import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SupplierProfileServiceImpl implements SupplierProfileService {
@@ -15,15 +14,12 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
     private SupplierProfileRepository repo;
 
     @Override
-    public List<SupplierProfile> getActiveSuppliers() {
-        return repo.findByActive(true);
+    public SupplierProfile createSupplier(SupplierProfile supplier) {
+        return repo.save(supplier);
     }
 
     @Override
-    public SupplierProfile deactivateSupplier(Long id) {
-        SupplierProfile s = repo.findById(id).orElse(null);
-        if (s == null) return null;
-        s.setActive(false);
-        return repo.save(s);
+    public Optional<SupplierProfile> getSupplierById(Long id) {
+        return repo.findById(id);
     }
 }
