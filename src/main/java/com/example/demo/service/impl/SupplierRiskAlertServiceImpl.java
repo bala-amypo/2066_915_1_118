@@ -1,38 +1,31 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.exception.BadRequestException;
-import com.example.demo.model.SupplierRiskAlert;
-import com.example.demo.repository.SupplierRiskAlertRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.model.SupplierProfile;
+import com.example.demo.repository.SupplierProfileRepository;
+import com.example.demo.service.SupplierRiskAlertService;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class SupplierRiskAlertServiceImpl {
+public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
 
-    private final SupplierRiskAlertRepository repo;
+    @Autowired
+    private SupplierProfileRepository supplierRepo;
 
-    public SupplierRiskAlertServiceImpl(SupplierRiskAlertRepository repo) {
-        this.repo = repo;
-    }
+    @Override
+    public List<String> generateRiskAlerts() {
+        List<String> alerts = new ArrayList<>();
+        List<SupplierProfile> suppliers = supplierRepo.findAll();
 
-    public SupplierRiskAlert createAlert(SupplierRiskAlert a) {
-        a.setResolved(false);
-        return repo.save(a);
-    }
-
-    public List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId) {
-        return repo.findBySupplierId(supplierId);
-    }
-
-    public SupplierRiskAlert resolveAlert(Long id) {
-        SupplierRiskAlert a = repo.findById(id)
-                .orElseThrow(() -> new BadRequestException("Alert not found"));
-        a.setResolved(true);
-        return repo.save(a);
-    }
-
-    public List<SupplierRiskAlert> getAllAlerts() {
-        return repo.findAll();
+        for (SupplierProfile supplier : suppliers) {
+            if (!supplier.getActive()) {
+                alerts.add("Supplier inactive: " + supplier.getName());
+            }
+        }
+        return alerts;
     }
 }
