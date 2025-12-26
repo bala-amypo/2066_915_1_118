@@ -1,42 +1,26 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.exception.BadRequestException;
-import com.example.demo.model.DeliveryRecord;
-import com.example.demo.repository.DeliveryRecordRepository;
+import com.example.demo.entity.PurchaseOrderRecord;
 import com.example.demo.repository.PurchaseOrderRecordRepository;
+import com.example.demo.service.DeliveryRecordService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class DeliveryRecordServiceImpl {
+public class DeliveryRecordServiceImpl implements DeliveryRecordService {
 
-    private final DeliveryRecordRepository deliveryRepo;
-    private final PurchaseOrderRecordRepository poRepo;
+    @Autowired
+    private PurchaseOrderRecordRepository poRepo;
 
-    public DeliveryRecordServiceImpl(
-            DeliveryRecordRepository deliveryRepo,
-            PurchaseOrderRecordRepository poRepo) {
-        this.deliveryRepo = deliveryRepo;
-        this.poRepo = poRepo;
+    @Override
+    public List<PurchaseOrderRecord> getAll() {
+        return poRepo.findAll();
     }
 
-    public DeliveryRecord recordDelivery(DeliveryRecord d) {
-        poRepo.findById(d.getPoId())
-                .orElseThrow(() -> new BadRequestException("Invalid PO id"));
-
-        if (d.getDeliveredQuantity() < 0) {
-            throw new BadRequestException("Delivered quantity must be non-negative");
-        }
-
-        return deliveryRepo.save(d);
-    }
-
-    public List<DeliveryRecord> getDeliveriesByPO(Long poId) {
-        return deliveryRepo.findByPoId(poId);
-    }
-
-    public List<DeliveryRecord> getAllDeliveries() {
-        return deliveryRepo.findAll();
+    @Override
+    public PurchaseOrderRecord save(PurchaseOrderRecord record) {
+        return poRepo.save(record);
     }
 }
