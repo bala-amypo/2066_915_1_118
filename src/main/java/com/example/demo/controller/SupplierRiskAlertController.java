@@ -1,50 +1,54 @@
-package com.example.demo.controller;
+package com.example.demo.model;
 
-import com.example.demo.model.SupplierRiskAlert;
-import com.example.demo.service.SupplierRiskAlertService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import java.util.List;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
-@RestController
-@RequestMapping("/api/risk-alerts")
-@Tag(name = "Risk Alerts")
-public class SupplierRiskAlertController {
+@Entity
+@Table(name = "supplier_risk_alerts")
+public class SupplierRiskAlert {
     
-    private final SupplierRiskAlertService riskAlertService;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     
-    public SupplierRiskAlertController(SupplierRiskAlertService riskAlertService) {
-        this.riskAlertService = riskAlertService;
+    private Long supplierId;
+    private String alertLevel;
+    private String message;
+    
+    @Column(name = "alert_date")
+    private LocalDateTime alertDate;
+    
+    private Boolean resolved = false;
+    
+    public SupplierRiskAlert() {}
+    
+    public SupplierRiskAlert(Long supplierId, String alertLevel, String message) {
+        this.supplierId = supplierId;
+        this.alertLevel = alertLevel;
+        this.message = message;
     }
     
-    @PostMapping
-    @Operation(summary = "Create risk alert")
-    public ResponseEntity<SupplierRiskAlert> createAlert(@RequestBody SupplierRiskAlert alert) {
-        SupplierRiskAlert created = riskAlertService.createAlert(alert);
-        return ResponseEntity.ok(created);
+    @PrePersist
+    protected void onCreate() {
+        alertDate = LocalDateTime.now();
     }
     
-    @GetMapping("/supplier/{supplierId}")
-    @Operation(summary = "Get alerts by supplier")
-    public ResponseEntity<List<SupplierRiskAlert>> getAlertsBySupplier(@Parameter(name = "supplierId") @PathVariable Long supplierId) {
-        List<SupplierRiskAlert> alerts = riskAlertService.getAlertsBySupplier(supplierId);
-        return ResponseEntity.ok(alerts);
-    }
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
     
-    @PutMapping("/{id}/resolve")
-    @Operation(summary = "Resolve alert")
-    public ResponseEntity<SupplierRiskAlert> resolveAlert(@Parameter(name = "id") @PathVariable Long id) {
-        SupplierRiskAlert resolved = riskAlertService.resolveAlert(id);
-        return ResponseEntity.ok(resolved);
-    }
+    public Long getSupplierId() { return supplierId; }
+    public void setSupplierId(Long supplierId) { this.supplierId = supplierId; }
     
-    @GetMapping
-    @Operation(summary = "Get all alerts")
-    public ResponseEntity<List<SupplierRiskAlert>> getAllAlerts() {
-        List<SupplierRiskAlert> alerts = riskAlertService.getAllAlerts();
-        return ResponseEntity.ok(alerts);
-    }
+    public String getAlertLevel() { return alertLevel; }
+    public void setAlertLevel(String alertLevel) { this.alertLevel = alertLevel; }
+    
+    public String getMessage() { return message; }
+    public void setMessage(String message) { this.message = message; }
+    
+    public LocalDateTime getAlertDate() { return alertDate; }
+    public void setAlertDate(LocalDateTime alertDate) { this.alertDate = alertDate; }
+    
+    public Boolean getResolved() { return resolved; }
+    public void setResolved(Boolean resolved) { this.resolved = resolved; }
 }
