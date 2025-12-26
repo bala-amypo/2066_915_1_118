@@ -1,28 +1,26 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.DelayScoreRecord;
+import com.example.demo.dto.DelayScoreResponse;
 import com.example.demo.service.DelayScoreService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/delay-scores")
+@RequestMapping("/delay")
 public class DelayScoreController {
 
-    private final DelayScoreService delayService;
+    @Autowired
+    private DelayScoreService delayService;
 
-    public DelayScoreController(DelayScoreService delayService) {
-        this.delayService = delayService;
+    @GetMapping("/compute/{supplierId}")
+    public DelayScoreResponse computeDelayScore(@PathVariable Long supplierId) {
+        return delayService.computeDelayScore(supplierId);
     }
 
-    @PostMapping("/compute/{poId}")
-    public DelayScoreRecord compute(@PathVariable Long poId) {
-        return delayService.computeDelayScore(poId);
-    }
-
-    @GetMapping("/supplier/{supplierId}")
-    public List<DelayScoreRecord> getBySupplier(@PathVariable Long supplierId) {
+    @GetMapping("/scores/{supplierId}")
+    public List<DelayScoreResponse> getScoresBySupplier(@PathVariable Long supplierId) {
         return delayService.getScoresBySupplier(supplierId);
     }
 }
