@@ -1,38 +1,25 @@
 package com.example.demo.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 import com.example.demo.model.SupplierProfile;
 import com.example.demo.service.SupplierProfileService;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/suppliers")
 public class SupplierProfileController {
 
-    private final SupplierProfileService supplierService;
-
-    public SupplierProfileController(SupplierProfileService supplierService) {
-        this.supplierService = supplierService;
-    }
+    @Autowired
+    private SupplierProfileService supplierService;
 
     @PostMapping
-    public SupplierProfile create(@RequestBody SupplierProfile supplier) {
+    public SupplierProfile createSupplier(@RequestBody SupplierProfile supplier) {
         return supplierService.createSupplier(supplier);
     }
 
     @GetMapping("/{id}")
-    public SupplierProfile getById(@PathVariable Long id) {
+    public Optional<SupplierProfile> getSupplier(@PathVariable Long id) {
         return supplierService.getSupplierById(id);
-    }
-
-    @GetMapping("/active")
-    public List<SupplierProfile> getActive() {
-        return supplierService.getActiveSuppliers();
-    }
-
-    @PutMapping("/{id}/deactivate")
-    public SupplierProfile deactivate(@PathVariable Long id) {
-        return supplierService.deactivateSupplier(id);
     }
 }
