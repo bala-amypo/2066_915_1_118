@@ -64,4 +64,4 @@ public class AuthController {
         
         return ResponseEntity.badRequest().build();
     }
-}
+}demo/src/main/resources
