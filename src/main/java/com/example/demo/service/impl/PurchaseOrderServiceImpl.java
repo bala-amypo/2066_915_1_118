@@ -20,6 +20,11 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     }
 
     @Override
+    public List<PurchaseOrder> getOrdersBySupplier(Long supplierId) {
+        return repo.findBySupplierId(supplierId);
+    }
+
+    @Override
     public PurchaseOrder save(PurchaseOrder po) {
         return repo.save(po);
     }

@@ -12,15 +12,15 @@ import java.util.List;
 public class DeliveryRecordServiceImpl implements DeliveryRecordService {
 
     @Autowired
-    private PurchaseOrderRecordRepository poRepo;
+    private PurchaseOrderRecordRepository repo;
 
     @Override
-    public List<PurchaseOrderRecord> getAll() {
-        return poRepo.findAll();
+    public List<PurchaseOrderRecord> getDeliveriesForPO(Long poId) {
+        return repo.findByPurchaseOrderId(poId);
     }
 
     @Override
     public PurchaseOrderRecord save(PurchaseOrderRecord record) {
-        return poRepo.save(record);
+        return repo.save(record);
     }
 }

@@ -1,10 +1,10 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.PurchaseOrderRecord;
-
+import com.example.demo.entity.PurchaseOrder;
 import java.util.List;
 
 public interface PurchaseOrderService {
-    PurchaseOrderRecord createPurchaseOrder(PurchaseOrderRecord po);
-    List<PurchaseOrderRecord> getOrdersBySupplier(Long supplierId);
+    List<PurchaseOrder> getAll();
+    List<PurchaseOrder> getOrdersBySupplier(Long supplierId);
+    PurchaseOrder save(PurchaseOrder po);
 }
