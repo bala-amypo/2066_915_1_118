@@ -2,27 +2,42 @@ package com.example.demo.controller;
 
 import com.example.demo.model.DeliveryRecord;
 import com.example.demo.service.DeliveryRecordService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
-@RequestMapping("/deliveries")
+@RequestMapping("/api/deliveries")
+@Tag(name = "Delivery Records")
 public class DeliveryRecordController {
-
-    private final DeliveryRecordService deliveryService;
-
-    public DeliveryRecordController(DeliveryRecordService deliveryService) {
-        this.deliveryService = deliveryService;
+    
+    private final DeliveryRecordService deliveryRecordService;
+    
+    public DeliveryRecordController(DeliveryRecordService deliveryRecordService) {
+        this.deliveryRecordService = deliveryRecordService;
     }
-
+    
     @PostMapping
-    public DeliveryRecord record(@RequestBody DeliveryRecord record) {
-        return deliveryService.recordDelivery(record);
+    @Operation(summary = "Record delivery")
+    public ResponseEntity<DeliveryRecord> recordDelivery(@RequestBody DeliveryRecord delivery) {
+        DeliveryRecord saved = deliveryRecordService.recordDelivery(delivery);
+        return ResponseEntity.ok(saved);
     }
-
+    
     @GetMapping("/po/{poId}")
-    public List<DeliveryRecord> getForPO(@PathVariable Long poId) {
-        return deliveryService.getDeliveriesForPO(poId);
+    @Operation(summary = "Get deliveries by purchase order")
+    public ResponseEntity<List<DeliveryRecord>> getDeliveriesByPO(@Parameter(name = "poId") @PathVariable Long poId) {
+        List<DeliveryRecord> deliveries = deliveryRecordService.getDeliveriesByPO(poId);
+        return ResponseEntity.ok(deliveries);
+    }
+    
+    @GetMapping
+    @Operation(summary = "Get all deliveries")
+    public ResponseEntity<List<DeliveryRecord>> getAllDeliveries() {
+        List<DeliveryRecord> deliveries = deliveryRecordService.getAllDeliveries();
+        return ResponseEntity.ok(deliveries);
     }
 }
