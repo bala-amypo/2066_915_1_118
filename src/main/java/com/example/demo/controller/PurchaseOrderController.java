@@ -1,9 +1,10 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.PurchaseOrderRecord;
+import com.example.demo.service.PurchaseOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.example.demo.model.PurchaseOrderRecord;
-import com.example.demo.service.PurchaseOrderService;
+
 import java.util.List;
 
 @RestController
@@ -13,13 +14,13 @@ public class PurchaseOrderController {
     @Autowired
     private PurchaseOrderService poService;
 
-    @PostMapping
-    public PurchaseOrderRecord createPurchaseOrder(@RequestBody PurchaseOrderRecord order) {
-        return poService.createPurchaseOrder(order);
+    @PostMapping("/create")
+    public PurchaseOrderRecord createPurchaseOrder(@RequestBody PurchaseOrderRecord po) {
+        return poService.createPurchaseOrder(po);
     }
 
     @GetMapping("/supplier/{supplierId}")
     public List<PurchaseOrderRecord> getOrdersBySupplier(@PathVariable Long supplierId) {
-        return poService.getOrdersBySupplierId(supplierId);
+        return poService.getOrdersBySupplier(supplierId);
     }
 }
