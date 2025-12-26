@@ -1,6 +1,6 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.PurchaseOrderRecord;
+import com.example.demo.entity.PurchaseOrder;
 import com.example.demo.repository.PurchaseOrderRepository;
 import com.example.demo.service.PurchaseOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +15,12 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     private PurchaseOrderRepository repo;
 
     @Override
-    public PurchaseOrderRecord createPurchaseOrder(PurchaseOrderRecord po) {
-        return repo.save(po);
+    public List<PurchaseOrder> getAll() {
+        return repo.findAll();
     }
 
     @Override
-    public List<PurchaseOrderRecord> getOrdersBySupplier(Long supplierId) {
-        return repo.findBySupplierId(supplierId);
+    public PurchaseOrder save(PurchaseOrder po) {
+        return repo.save(po);
     }
 }
