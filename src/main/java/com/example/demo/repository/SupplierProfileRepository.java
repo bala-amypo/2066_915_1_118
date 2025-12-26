@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
+import com.example.demo.entity.SupplierProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.example.demo.model.SupplierProfile;
 
-public interface SupplierProfileRepository extends JpaRepository<SupplierProfile, Long> {}
+public interface SupplierProfileRepository extends JpaRepository<SupplierProfile, Long> {
+}

@@ -1,9 +1,8 @@
 package com.example.demo.service;
 
-import com.example.demo.model.SupplierProfile;
-import java.util.Optional;
+import com.example.demo.entity.SupplierProfile;
 
 public interface SupplierProfileService {
     SupplierProfile createSupplier(SupplierProfile supplier);
-    Optional<SupplierProfile> getSupplierById(Long id);
+    SupplierProfile getSupplierById(Long id);
 }

@@ -1,11 +1,10 @@
 package com.example.demo.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.example.demo.model.SupplierProfile;
+import com.example.demo.entity.SupplierProfile;
 import com.example.demo.repository.SupplierProfileRepository;
 import com.example.demo.service.SupplierProfileService;
-import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class SupplierProfileServiceImpl implements SupplierProfileService {
@@ -19,7 +18,7 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
     }
 
     @Override
-    public Optional<SupplierProfile> getSupplierById(Long id) {
-        return repo.findById(id);
+    public SupplierProfile getSupplierById(Long id) {
+        return repo.findById(id).orElse(null);
     }
 }
