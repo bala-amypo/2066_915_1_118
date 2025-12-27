@@ -1,7 +1,7 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.SupplierProfile;
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.SupplierProfile;
 import com.example.demo.repository.SupplierProfileRepository;
 import com.example.demo.service.SupplierProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,19 +12,19 @@ import java.util.Optional;
 
 @Service
 public class SupplierProfileServiceImpl implements SupplierProfileService {
-
+    
     @Autowired
     private SupplierProfileRepository supplierProfileRepository;
 
     @Override
-    public SupplierProfile createSupplier(SupplierProfile supplier) {
-        return supplierProfileRepository.save(supplier);
+    public SupplierProfile getSupplierById(Long id) {
+        return supplierProfileRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found with id: " + id));
     }
 
     @Override
-    public SupplierProfile getSupplierById(Long id) {
-        return supplierProfileRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
+    public SupplierProfile createSupplier(SupplierProfile supplier) {
+        return supplierProfileRepository.save(supplier);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
     }
 
     @Override
-    public Optional<SupplierProfile> getBySupplierCode(String code) {
-        return supplierProfileRepository.findBySupplierCode(code);
+    public Optional<SupplierProfile> getBySupplierCode(String supplierCode) {
+        return supplierProfileRepository.findBySupplierCode(supplierCode);
     }
 }
