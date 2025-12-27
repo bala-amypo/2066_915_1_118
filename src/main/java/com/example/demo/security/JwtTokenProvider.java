@@ -7,15 +7,18 @@ import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
-    private String secret = "secretKey1234567890123456789012345678901234567890";
-    private long validity = 3600000; // 1h
+    private final String secret = "secretKey1234567890123456789012345678901234567890";
+    private final long validityInMs = 3600000; 
 
     public String generateToken(AppUser user) {
         Claims claims = Jwts.claims().setSubject(user.getUsername());
-        claims.put("role", user.getRole());
-        return Jwts.builder().setClaims(claims).setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + validity))
-                .signWith(SignatureAlgorithm.HS256, secret).compact();
+        claims.put("role", user.getRole().name());
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + validityInMs))
+                .signWith(SignatureAlgorithm.HS256, secret)
+                .compact();
     }
 
     public boolean validateToken(String token) {
@@ -23,5 +26,13 @@ public class JwtTokenProvider {
             Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
             return true;
         } catch (Exception e) { return false; }
+    }
+
+    public String getEmailFromToken(String token) {
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public String getRoleFromToken(String token) {
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().get("role", String.class);
     }
 }
