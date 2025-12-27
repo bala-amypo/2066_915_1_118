@@ -1,17 +1,9 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.PurchaseOrderRecord;
-
+import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
-import java.util.Optional;
 
-public interface PurchaseOrderRecordRepository {
-
-    PurchaseOrderRecord save(PurchaseOrderRecord po);
-
-    Optional<PurchaseOrderRecord> findById(Long id);
-
+public interface PurchaseOrderRecordRepository extends JpaRepository<PurchaseOrderRecord, Long> {
     List<PurchaseOrderRecord> findBySupplierId(Long supplierId);
-
-    List<PurchaseOrderRecord> findAll();
 }
