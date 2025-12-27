@@ -5,14 +5,17 @@ import com.example.demo.repository.DelayScoreRepository;
 import com.example.demo.service.DelayScoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class DelayScoreServiceImpl implements DelayScoreService {
     @Autowired private DelayScoreRepository repository;
+
+    @Override
+    public DelayScoreRecord computeDelayScore(Long poId) {
+        // Implementation logic here
+        return new DelayScoreRecord(); 
+    }
 
     @Override
     public List<DelayScoreRecord> getAllScores() {
@@ -23,12 +26,6 @@ public class DelayScoreServiceImpl implements DelayScoreService {
     public List<DelayScoreRecord> getScoresBySupplier(Long supplierId) {
         return repository.findAll().stream()
                 .filter(s -> s.getSupplierId().equals(supplierId))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public DelayScoreRecord calculateAndSaveScore(Long poId) {
-        // Logic for score calculation goes here
-        return null; 
+                .toList();
     }
 }

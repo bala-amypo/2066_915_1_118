@@ -30,13 +30,16 @@ public class AuthController {
         if (userRepository.existsByUsername(request.getUsername())) {
             return ResponseEntity.badRequest().body("Username exists");
         }
+        
         AppUser user = new AppUser();
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        // Ensure request.getRole() returns a String. 
-        // If it returns an Enum, use request.getRole().name()
-        user.setRole(request.getRole()); 
+        
+        // Convert Role object/enum to String to match AppUser field type
+        if (request.getRole() != null) {
+            user.setRole(request.getRole().toString());
+        }
         
         return ResponseEntity.ok(userRepository.save(user));
     }
@@ -46,8 +49,13 @@ public class AuthController {
         authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
-        AppUser user = userRepository.findByUsername(request.getUsername()).orElseThrow();
+        
+        AppUser user = userRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        
         String token = jwtTokenProvider.generateToken(user);
-        return ResponseEntity.ok(new AuthResponse(token)); // Wrapped in DTO for better test compatibility
+        
+        // Wrap token in AuthResponse DTO to satisfy client expectations
+        return ResponseEntity.ok(new AuthResponse(token));
     }
 }
