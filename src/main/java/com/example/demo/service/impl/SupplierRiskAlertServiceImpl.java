@@ -1,33 +1,12 @@
-package com.example.demo.service.impl;
-
-import com.example.demo.model.SupplierRiskAlert;
-import com.example.demo.repository.SupplierRiskAlertRepository;
-import com.example.demo.service.SupplierRiskAlertService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.NoSuchElementException;
-
 @Service
 public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
-    @Autowired private SupplierRiskAlertRepository repository;
+    // ... repository ...
 
     @Override
-    public SupplierRiskAlert saveAlert(SupplierRiskAlert alert) {
-        if (alert.getResolved() == null) alert.setResolved(false);
-        return repository.saveAndFlush(alert);
-    }
-
-    @Override
-    public List<SupplierRiskAlert> getAllAlerts() {
-        return repository.findAll();
-    }
-
-    @Override
-    public SupplierRiskAlert resolveAlert(Long id) {
-        SupplierRiskAlert alert = repository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("No value present"));
-        alert.setResolved(true);
-        return repository.saveAndFlush(alert);
+    public List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId) {
+        // Using the count logic or findBySupplierId
+        return repository.findAll().stream()
+            .filter(a -> a.getSupplierId().equals(supplierId))
+            .toList();
     }
 }
