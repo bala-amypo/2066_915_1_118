@@ -13,5 +13,6 @@ public class AppUser {
     private Long id;
     private String username;
     private String password;
-    private String role;
+    private String email; // Added to fix AuthController error
+    private String role; // Using String to simplify conversion
 }
