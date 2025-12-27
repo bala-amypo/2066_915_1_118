@@ -1,24 +1,29 @@
 package com.example.demo.service.impl;
+
 import com.example.demo.model.SupplierRiskAlert;
 import com.example.demo.repository.SupplierRiskAlertRepository;
 import com.example.demo.service.SupplierRiskAlertService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.*;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.NoSuchElementException;
 
 @Service
+@Transactional
 public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
-    private final SupplierRiskAlertRepository repository;
-    public SupplierRiskAlertServiceImpl(SupplierRiskAlertRepository repository) { this.repository = repository; }
+    @Autowired private SupplierRiskAlertRepository repository;
 
-    public SupplierRiskAlert createAlert(SupplierRiskAlert a) {
-        if (a.getResolved() == null) a.setResolved(false);
-        return repository.save(a);
+    @Override
+    public SupplierRiskAlert saveAlert(SupplierRiskAlert alert) {
+        if (alert.getResolved() == null) alert.setResolved(false);
+        return repository.saveAndFlush(alert);
     }
-    public List<SupplierRiskAlert> getAlertsBySupplier(Long id) { return repository.findBySupplierId(id); }
-    public List<SupplierRiskAlert> getAllAlerts() { return repository.findAll(); }
+
+    @Override
     public SupplierRiskAlert resolveAlert(Long id) {
-        SupplierRiskAlert a = repository.findById(id).orElseThrow();
-        a.setResolved(true);
-        return repository.save(a);
+        SupplierRiskAlert alert = repository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("No value present"));
+        alert.setResolved(true);
+        return repository.saveAndFlush(alert);
     }
 }
