@@ -6,11 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PurchaseOrderRecordRepository extends JpaRepository<PurchaseOrder, Long> {
+public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Long> {
+    // This allows lookups by supplierId, which many of your tests require
     List<PurchaseOrder> findBySupplierId(Long supplierId);
-    
-    // Some tests may use poId as a parameter name for supplier lookups
-    default List<PurchaseOrder> findByPoId(Long poId) {
-        return findBySupplierId(poId);
-    }
 }
