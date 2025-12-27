@@ -1,11 +1,10 @@
-package com.example.demo.entity;
+package com.example.demo.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.util.Objects;
 
 @Entity
-@Table(name = "delivery_records")
+@Table(name = "delivery_record")
 public class DeliveryRecord {
 
     @Id
@@ -13,22 +12,20 @@ public class DeliveryRecord {
     private Long id;
 
     private Long poId;
-
     private Integer deliveredQuantity;
-
     private LocalDate actualDeliveryDate;
 
-    // Constructors
-    public DeliveryRecord() {}
+    // ✅ REQUIRED no-args constructor
+    public DeliveryRecord() {
+    }
 
-    public DeliveryRecord(Long id, Long poId, Integer deliveredQuantity, LocalDate actualDeliveryDate) {
-        this.id = id;
+    // ✅ SAFE constructor for tests
+    public DeliveryRecord(Long poId, Integer deliveredQuantity, LocalDate actualDeliveryDate) {
         this.poId = poId;
         this.deliveredQuantity = deliveredQuantity;
         this.actualDeliveryDate = actualDeliveryDate;
     }
 
-    // Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -40,16 +37,4 @@ public class DeliveryRecord {
 
     public LocalDate getActualDeliveryDate() { return actualDeliveryDate; }
     public void setActualDeliveryDate(LocalDate actualDeliveryDate) { this.actualDeliveryDate = actualDeliveryDate; }
-
-    // Equals & hashCode
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof DeliveryRecord)) return false;
-        DeliveryRecord that = (DeliveryRecord) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() { return Objects.hash(id); }
 }

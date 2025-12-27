@@ -1,10 +1,9 @@
-package com.example.demo.entity;
+package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.util.Objects;
 
 @Entity
-@Table(name = "delay_scores")
+@Table(name = "delay_score_record")
 public class DelayScoreRecord {
 
     @Id
@@ -12,28 +11,24 @@ public class DelayScoreRecord {
     private Long id;
 
     private Long poId;
-
     private Long supplierId;
-
     private Integer delayDays;
-
+    private Double score;
     private String delaySeverity;
 
-    private Double score;
+  
+    public DelayScoreRecord() {
+    }
 
-    // Constructors
-    public DelayScoreRecord() {}
-
-    public DelayScoreRecord(Long id, Long poId, Long supplierId, Integer delayDays, String delaySeverity, Double score) {
-        this.id = id;
+    public DelayScoreRecord(Long poId, Long supplierId, Integer delayDays,
+                            Double score, String delaySeverity) {
         this.poId = poId;
         this.supplierId = supplierId;
         this.delayDays = delayDays;
-        this.delaySeverity = delaySeverity;
         this.score = score;
+        this.delaySeverity = delaySeverity;
     }
 
-    // Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -46,21 +41,9 @@ public class DelayScoreRecord {
     public Integer getDelayDays() { return delayDays; }
     public void setDelayDays(Integer delayDays) { this.delayDays = delayDays; }
 
-    public String getDelaySeverity() { return delaySeverity; }
-    public void setDelaySeverity(String delaySeverity) { this.delaySeverity = delaySeverity; }
-
     public Double getScore() { return score; }
     public void setScore(Double score) { this.score = score; }
 
-    // Equals & hashCode
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof DelayScoreRecord)) return false;
-        DelayScoreRecord that = (DelayScoreRecord) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() { return Objects.hash(id); }
+    public String getDelaySeverity() { return delaySeverity; }
+    public void setDelaySeverity(String delaySeverity) { this.delaySeverity = delaySeverity; }
 }
