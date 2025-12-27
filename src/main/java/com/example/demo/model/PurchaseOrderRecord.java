@@ -1,11 +1,10 @@
-package com.example.demo.entity;
+package com.example.demo.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.util.Objects;
 
 @Entity
-@Table(name = "purchase_orders")
+@Table(name = "purchase_order_record")
 public class PurchaseOrderRecord {
 
     @Id
@@ -13,29 +12,25 @@ public class PurchaseOrderRecord {
     private Long id;
 
     private Long supplierId;
-
     private String poNumber;
-
     private Integer quantity;
-
+    private LocalDate promisedDeliveryDate;
     private LocalDate issuedDate;
 
-    private LocalDate promisedDeliveryDate;
+    // ✅ REQUIRED by JPA
+    public PurchaseOrderRecord() {
+    }
 
-    // Constructors
-    public PurchaseOrderRecord() {}
-
-    public PurchaseOrderRecord(Long id, Long supplierId, String poNumber, Integer quantity,
-                               LocalDate issuedDate, LocalDate promisedDeliveryDate) {
-        this.id = id;
+    // ✅ SAFE constructor for tests
+    public PurchaseOrderRecord(Long supplierId, String poNumber, Integer quantity,
+                               LocalDate promisedDeliveryDate, LocalDate issuedDate) {
         this.supplierId = supplierId;
         this.poNumber = poNumber;
         this.quantity = quantity;
-        this.issuedDate = issuedDate;
         this.promisedDeliveryDate = promisedDeliveryDate;
+        this.issuedDate = issuedDate;
     }
 
-    // Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -48,21 +43,15 @@ public class PurchaseOrderRecord {
     public Integer getQuantity() { return quantity; }
     public void setQuantity(Integer quantity) { this.quantity = quantity; }
 
-    public LocalDate getIssuedDate() { return issuedDate; }
-    public void setIssuedDate(LocalDate issuedDate) { this.issuedDate = issuedDate; }
-
     public LocalDate getPromisedDeliveryDate() { return promisedDeliveryDate; }
-    public void setPromisedDeliveryDate(LocalDate promisedDeliveryDate) { this.promisedDeliveryDate = promisedDeliveryDate; }
-
-    // Equals & hashCode
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PurchaseOrderRecord)) return false;
-        PurchaseOrderRecord that = (PurchaseOrderRecord) o;
-        return Objects.equals(id, that.id);
+    public void setPromisedDeliveryDate(LocalDate promisedDeliveryDate) {
+        this.promisedDeliveryDate = promisedDeliveryDate;
     }
 
-    @Override
-    public int hashCode() { return Objects.hash(id); }
+    public LocalDate getIssuedDate() { 
+    return issuedDate; 
+    }
+    public void setIssuedDate(LocalDate issuedDate) { 
+    this.issuedDate = issuedDate; 
+    }
 }

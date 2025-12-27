@@ -1,10 +1,9 @@
-package com.example.demo.entity;
+package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.util.Objects;
 
 @Entity
-@Table(name = "supplier_risk_alerts")
+@Table(name = "supplier_risk_alert")
 public class SupplierRiskAlert {
 
     @Id
@@ -12,43 +11,38 @@ public class SupplierRiskAlert {
     private Long id;
 
     private Long supplierId;
-
+    private String alertType;
+    private String description;
+    private Boolean resolved = false;
     private String alertLevel;
 
-    private Boolean resolved = false;
-
-    // Constructors
-    public SupplierRiskAlert() {}
-
-    public SupplierRiskAlert(Long id, Long supplierId, String alertLevel, Boolean resolved) {
-        this.id = id;
-        this.supplierId = supplierId;
-        this.alertLevel = alertLevel;
-        this.resolved = resolved;
+    public SupplierRiskAlert() {
     }
 
-    // Getters & Setters
+ 
+    public SupplierRiskAlert(Long supplierId, String alertType,
+                             String description, String alertLevel) {
+        this.supplierId = supplierId;
+        this.alertType = alertType;
+        this.description = description;
+        this.alertLevel = alertLevel;
+    }
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
     public Long getSupplierId() { return supplierId; }
     public void setSupplierId(Long supplierId) { this.supplierId = supplierId; }
 
-    public String getAlertLevel() { return alertLevel; }
-    public void setAlertLevel(String alertLevel) { this.alertLevel = alertLevel; }
+    public String getAlertType() { return alertType; }
+    public void setAlertType(String alertType) { this.alertType = alertType; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
     public Boolean getResolved() { return resolved; }
     public void setResolved(Boolean resolved) { this.resolved = resolved; }
 
-    // Equals & hashCode
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof SupplierRiskAlert)) return false;
-        SupplierRiskAlert that = (SupplierRiskAlert) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() { return Objects.hash(id); }
+    public String getAlertLevel() { return alertLevel; }
+    public void setAlertLevel(String alertLevel) { this.alertLevel = alertLevel; }
 }
