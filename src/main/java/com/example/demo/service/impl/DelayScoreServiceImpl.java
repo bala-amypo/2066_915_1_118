@@ -16,7 +16,6 @@ public class DelayScoreServiceImpl implements DelayScoreService {
     private final SupplierProfileRepository supplierProfileRepository;
     private final SupplierRiskAlertService riskAlertService;
 
-    // Constructor Injection exactly as test expects
     public DelayScoreServiceImpl(DelayScoreRecordRepository delayScoreRecordRepository,
                                  PurchaseOrderRecordRepository poRepository,
                                  DeliveryRecordRepository deliveryRepository,
@@ -32,12 +31,12 @@ public class DelayScoreServiceImpl implements DelayScoreService {
     @Override
     public DelayScoreRecord computeDelayScore(Long poId) {
         PurchaseOrderRecord po = poRepository.findById(poId)
-            .orElseThrow(() -> new ResourceNotFoundException("Purchase order not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Purchase order not found"));
 
         SupplierProfile supplier = supplierProfileRepository.findById(po.getSupplierId())
-            .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
 
-        if (!supplier.getActive()) {
+        if (supplier.getActive() == null || !supplier.getActive()) {
             throw new BadRequestException("Inactive supplier");
         }
 
@@ -46,17 +45,11 @@ public class DelayScoreServiceImpl implements DelayScoreService {
             throw new BadRequestException("No deliveries");
         }
 
-        // Logic: use latest delivery
-        DeliveryRecord latest = deliveries.get(deliveries.size() - 1);
+        DeliveryRecord latest = deliveries.get(0);
         long days = ChronoUnit.DAYS.between(po.getPromisedDeliveryDate(), latest.getActualDeliveryDate());
         int delayDays = (int) Math.max(0, days);
 
-        String severity;
-        if (delayDays == 0) severity = "ON_TIME";
-        else if (delayDays <= 3) severity = "MINOR";
-        else if (delayDays <= 7) severity = "MODERATE";
-        else severity = "SEVERE";
-
+        String severity = (delayDays == 0) ? "ON_TIME" : (delayDays <= 3) ? "MINOR" : (delayDays <= 7) ? "MODERATE" : "SEVERE";
         double score = Math.max(0, 100 - (delayDays * 5));
 
         DelayScoreRecord record = new DelayScoreRecord();
@@ -67,7 +60,7 @@ public class DelayScoreServiceImpl implements DelayScoreService {
         record.setScore(score);
 
         if ("SEVERE".equals(severity)) {
-            riskAlertService.createAlert(new SupplierRiskAlert(po.getSupplierId(), "HIGH", "Severe delay on PO " + po.getPoNumber()));
+            riskAlertService.createAlert(new SupplierRiskAlert(po.getSupplierId(), "HIGH", "Severe delay"));
         }
 
         return delayScoreRecordRepository.save(record);
