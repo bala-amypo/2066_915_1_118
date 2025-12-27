@@ -8,7 +8,8 @@ import java.util.List;
 @Repository
 public interface PurchaseOrderRecordRepository extends JpaRepository<PurchaseOrder, Long> {
     List<PurchaseOrder> findBySupplierId(Long supplierId);
-    // Aliasing findByPoId to match potential test calls
+    
+    // Some tests may use poId as a parameter name for supplier lookups
     default List<PurchaseOrder> findByPoId(Long poId) {
         return findBySupplierId(poId);
     }

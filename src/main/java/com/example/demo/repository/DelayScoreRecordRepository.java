@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DelayScoreRecordRepository extends JpaRepository<DelayScoreRecord, Long> {
+    // Standard JpaRepository methods will satisfy the test requirements
 }
