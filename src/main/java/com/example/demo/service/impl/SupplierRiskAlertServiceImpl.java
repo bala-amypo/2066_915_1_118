@@ -11,13 +11,16 @@ import java.util.stream.Collectors;
 
 @Service
 public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
+
     private final SupplierRiskAlertRepository riskAlertRepository;
+
     public SupplierRiskAlertServiceImpl(SupplierRiskAlertRepository riskAlertRepository) {
         this.riskAlertRepository = riskAlertRepository;
     }
 
     @Override
     public SupplierRiskAlert createAlert(SupplierRiskAlert alert) {
+        // Fixes testAlertCreationDefaultResolvedFalse
         if (alert.getResolved() == null) {
             alert.setResolved(false);
         }
@@ -31,26 +34,22 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
 
     @Override
     public SupplierRiskAlert resolveAlert(Long alertId) {
+        // Fixes testResolveAlertChangesFlag
         SupplierRiskAlert alert = riskAlertRepository.findById(alertId)
                 .orElseThrow(() -> new BadRequestException("Alert not found"));
         alert.setResolved(true);
         return riskAlertRepository.save(alert);
     }
 
-    @Override
+    // MISSING LOGIC: Fixes testCriteriaAlertMediumRisk & testCriteriaLikeHighRiskSuppliers
     public List<SupplierRiskAlert> getAlertsByLevel(String level) {
-        if (level == null) return List.of();
-        String search = level.toUpperCase();
-        
         return riskAlertRepository.findAll().stream()
-                .filter(a -> a.getAlertLevel() != null && 
-                             a.getAlertLevel().toUpperCase().contains(search))
+                .filter(a -> a.getAlertLevel() != null && a.getAlertLevel().equalsIgnoreCase(level))
                 .collect(Collectors.toList());
     }
 
-    @Override
+    // MISSING LOGIC: Fixes testCriteriaLikeUnresolvedAlerts
     public List<SupplierRiskAlert> getUnresolvedAlerts() {
-        // Fixes testCriteriaLikeUnresolvedAlerts
         return riskAlertRepository.findAll().stream()
                 .filter(a -> Boolean.FALSE.equals(a.getResolved()))
                 .collect(Collectors.toList());
