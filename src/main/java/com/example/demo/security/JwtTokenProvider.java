@@ -14,7 +14,8 @@ public class JwtTokenProvider {
     public String generateToken(AppUser user) {
         return Jwts.builder()
                 .setSubject(user.getUsername())
-                .claim("role", user.getRole()) // FIXED: Removed .name()
+                .claim("email", user.getEmail())
+                .claim("role", user.getRole())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
@@ -23,6 +24,14 @@ public class JwtTokenProvider {
 
     public String getUsernameFromJWT(String token) {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public String getEmailFromToken(String token) {
+        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().get("email", String.class);
+    }
+
+    public String getRoleFromToken(String token) {
+        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().get("role", String.class);
     }
 
     public boolean validateToken(String token) {

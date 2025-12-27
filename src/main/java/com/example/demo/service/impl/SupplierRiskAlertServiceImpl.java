@@ -17,7 +17,7 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
     private SupplierRiskAlertRepository repository;
 
     @Override
-    public SupplierRiskAlert saveAlert(SupplierRiskAlert alert) {
+    public SupplierRiskAlert createAlert(SupplierRiskAlert alert) { // FIXED: Matches Interface
         if (alert.getResolved() == null) alert.setResolved(false);
         return repository.saveAndFlush(alert);
     }
