@@ -2,8 +2,8 @@ package com.example.demo.service.impl;
 
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.RegisterRequest;
-import com.example.demo.entity.AppUser;
-import com.example.demo.entity.Role;
+import com.example.demo.model.AppUser;
+import com.example.demo.model.Role;
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.repository.AppUserRepository;
 import com.example.demo.security.JwtTokenProvider;
