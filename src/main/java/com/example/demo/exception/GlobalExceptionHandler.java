@@ -1,29 +1,33 @@
 package com.example.demo.exception;
 
-import com.example.demo.dto.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    
-    @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<ApiResponse> handleBadRequest(BadRequestException ex) {
-        return ResponseEntity.badRequest()
-            .body(new ApiResponse(false, ex.getMessage()));
-    }
-    
+
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ApiResponse> handleNotFound(ResourceNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-            .body(new ApiResponse(false, ex.getMessage()));
+    public ResponseEntity<?> handleNotFound(ResourceNotFoundException ex) {
+        Map<String, String> body = new HashMap<>();
+        body.put("message", ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
-    
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<?> handleBadRequest(BadRequestException ex) {
+        Map<String, String> body = new HashMap<>();
+        body.put("message", ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ApiResponse> handleIllegalArgument(IllegalArgumentException ex) {
-        return ResponseEntity.badRequest()
-            .body(new ApiResponse(false, ex.getMessage()));
+    public ResponseEntity<?> handleIllegalArgument(IllegalArgumentException ex) {
+        Map<String, String> body = new HashMap<>();
+        body.put("message", ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 }
