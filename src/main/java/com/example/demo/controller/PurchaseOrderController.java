@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.PurchaseOrderRecord;
+import com.example.demo.entity.PurchaseOrderRecord;
 import com.example.demo.service.PurchaseOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
