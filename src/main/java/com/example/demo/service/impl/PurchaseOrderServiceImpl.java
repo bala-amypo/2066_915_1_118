@@ -1,7 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.PurchaseOrder;
-import com.example.demo.repository.PurchaseOrderRepository; // Ensure this import matches
+import com.example.demo.repository.PurchaseOrderRecordRepository; // Updated Import
 import com.example.demo.service.PurchaseOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,11 +13,10 @@ import java.util.List;
 public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
     @Autowired
-    private PurchaseOrderRepository poRepository; // This symbol will now be found
+    private PurchaseOrderRecordRepository poRepository; // Using the 'Record' version
 
     @Override
     public PurchaseOrder createPurchaseOrder(PurchaseOrder po) {
-        // Use saveAndFlush for test visibility
         return poRepository.saveAndFlush(po);
     }
 
@@ -28,7 +27,8 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
     @Override
     public PurchaseOrder getPurchaseOrderById(Long id) {
-        return poRepository.findById(id).orElseThrow(() -> new RuntimeException("PO not found"));
+        return poRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Purchase Order not found"));
     }
 
     @Override
