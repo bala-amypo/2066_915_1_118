@@ -1,6 +1,6 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.SupplierProfile;
+import com.example.demo.model.SupplierProfile;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.SupplierProfileRepository;
 import com.example.demo.service.SupplierProfileService;
