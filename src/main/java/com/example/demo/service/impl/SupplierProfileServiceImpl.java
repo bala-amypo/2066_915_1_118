@@ -20,7 +20,6 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
 
     @Override
     public SupplierProfile createSupplier(SupplierProfile profile) {
-        // saveAndFlush ensures data is written immediately for test visibility
         return repository.saveAndFlush(profile);
     }
 
@@ -32,7 +31,6 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
 
     @Override
     public Optional<SupplierProfile> getBySupplierCode(String code) {
-        // Matches the Optional<SupplierProfile> return type in the Interface
         return repository.findBySupplierCode(code);
     }
 
