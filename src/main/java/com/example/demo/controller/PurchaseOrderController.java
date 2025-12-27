@@ -1,37 +1,37 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.PurchaseOrder;
+import com.example.demo.entity.PurchaseOrderRecord;
 import com.example.demo.service.PurchaseOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/pos")
+@RequestMapping("/purchase-order")
 public class PurchaseOrderController {
 
     @Autowired
-    private PurchaseOrderService poService;
+    private PurchaseOrderService purchaseOrderService;
 
-    @PostMapping
-    public ResponseEntity<PurchaseOrder> createPO(@RequestBody PurchaseOrder po) {
-        return ResponseEntity.ok(poService.createPurchaseOrder(po));
-    }
-
-    @GetMapping
-    public ResponseEntity<List<PurchaseOrder>> getAllPOs() {
-        return ResponseEntity.ok(poService.getAllPurchaseOrders());
+    @PostMapping("/create")
+    public PurchaseOrderRecord createPO(@RequestBody PurchaseOrderRecord po) {
+        return purchaseOrderService.createPurchaseOrder(po);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PurchaseOrder> getPOById(@PathVariable Long id) {
-        return ResponseEntity.ok(poService.getPurchaseOrderById(id));
+    public Optional<PurchaseOrderRecord> getPOById(@PathVariable Long id) {
+        return purchaseOrderService.getPOById(id);
     }
 
     @GetMapping("/supplier/{supplierId}")
-    public ResponseEntity<List<PurchaseOrder>> getBySupplier(@PathVariable Long supplierId) {
-        return ResponseEntity.ok(poService.getPurchaseOrdersBySupplier(supplierId));
+    public List<PurchaseOrderRecord> getPOsBySupplier(@PathVariable Long supplierId) {
+        return purchaseOrderService.getPOsBySupplier(supplierId);
+    }
+
+    @GetMapping("/all")
+    public List<PurchaseOrderRecord> getAllPOs() {
+        return purchaseOrderService.getAllPurchaseOrders();
     }
 }

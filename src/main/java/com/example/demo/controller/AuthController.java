@@ -1,61 +1,25 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.*;
-import com.example.demo.model.*;
-import com.example.demo.repository.AppUserRepository;
-import com.example.demo.security.JwtTokenProvider;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import com.example.demo.dto.LoginRequest;
+import com.example.demo.dto.RegisterRequest;
+import com.example.demo.service.AppUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-    private final AuthenticationManager authenticationManager;
-    private final AppUserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtTokenProvider jwtTokenProvider;
 
-    public AuthController(AuthenticationManager authenticationManager, AppUserRepository userRepository, 
-                          PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
-        this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
+    @Autowired
+    private AppUserService appUserService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
-        if (userRepository.existsByUsername(request.getUsername())) {
-            return ResponseEntity.badRequest().body("Username exists");
-        }
-        
-        AppUser user = new AppUser();
-        user.setUsername(request.getUsername());
-        user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        
-        // Convert Role object/enum to String to match AppUser field type
-        if (request.getRole() != null) {
-            user.setRole(request.getRole().toString());
-        }
-        
-        return ResponseEntity.ok(userRepository.save(user));
+    public String register(@RequestBody RegisterRequest request) {
+        return appUserService.registerUser(request);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-        );
-        
-        AppUser user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        
-        String token = jwtTokenProvider.generateToken(user);
-        
-        // Wrap token in AuthResponse DTO to satisfy client expectations
-        return ResponseEntity.ok(new AuthResponse(token));
+    public String login(@RequestBody LoginRequest request) {
+        return appUserService.loginUser(request);
     }
 }
