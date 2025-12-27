@@ -1,12 +1,11 @@
 package com.example.demo.service;
 
-import com.example.demo.model.PurchaseOrderRecord;
+import com.example.demo.model.PurchaseOrder;
 import java.util.List;
-import java.util.Optional;
 
 public interface PurchaseOrderService {
-    PurchaseOrderRecord createPurchaseOrder(PurchaseOrderRecord po);
-    List<PurchaseOrderRecord> getPOsBySupplier(Long supplierId);
-    Optional<PurchaseOrderRecord> getPOById(Long id);
-    List<PurchaseOrderRecord> getAllPurchaseOrders();
+    PurchaseOrder createPurchaseOrder(PurchaseOrder po);
+    List<PurchaseOrder> getAllPurchaseOrders();
+    PurchaseOrder getPurchaseOrderById(Long id);
+    List<PurchaseOrder> getPurchaseOrdersBySupplier(Long supplierId);
 }
