@@ -1,29 +1,11 @@
-package com.example.demo.model;
+package com.example.demo.repository;
 
-import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import java.time.LocalDate;
+import com.example.demo.model.PurchaseOrder;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.util.List;
 
-@Entity
-@Table(name = "purchase_order_records")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class PurchaseOrderRecord {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-    @Column(unique = true)
-    private String poNumber;
-    
-    private Long supplierId;
-    private String itemDescription;
-    private Integer quantity;
-    private LocalDate promisedDeliveryDate;
-    
-    // This is the missing field causing the compilation error
-    private LocalDate issuedDate; 
+@Repository
+public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Long> {
+    List<PurchaseOrder> findBySupplierId(Long supplierId);
 }

@@ -5,11 +5,10 @@ import com.example.demo.repository.SupplierRiskAlertRepository;
 import com.example.demo.service.SupplierRiskAlertService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
-@Transactional
 public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
     @Autowired private SupplierRiskAlertRepository repository;
 
@@ -17,6 +16,11 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
     public SupplierRiskAlert saveAlert(SupplierRiskAlert alert) {
         if (alert.getResolved() == null) alert.setResolved(false);
         return repository.saveAndFlush(alert);
+    }
+
+    @Override
+    public List<SupplierRiskAlert> getAllAlerts() {
+        return repository.findAll();
     }
 
     @Override

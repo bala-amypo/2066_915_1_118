@@ -6,11 +6,9 @@ import com.example.demo.repository.SupplierProfileRepository;
 import com.example.demo.service.SupplierProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 public class SupplierProfileServiceImpl implements SupplierProfileService {
     @Autowired private SupplierProfileRepository repository;
 
@@ -25,8 +23,10 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
     }
 
     @Override
-    public SupplierProfile getSupplierByCode(String code) {
-        return repository.findBySupplierCode(code).orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
+    public void updateSupplierStatus(Long id, boolean status) {
+        SupplierProfile s = getSupplierById(id);
+        s.setActive(status);
+        repository.saveAndFlush(s);
     }
 
     @Override
@@ -37,5 +37,12 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
     }
 
     @Override
-    public List<SupplierProfile> getAllSuppliers() { return repository.findAll(); }
+    public SupplierProfile getSupplierByCode(String code) {
+        return repository.findBySupplierCode(code).orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
+    }
+
+    @Override
+    public List<SupplierProfile> getAllSuppliers() {
+        return repository.findAll();
+    }
 }
