@@ -7,12 +7,18 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(unique = true, nullable = false)
     private String username;
+
     private String password;
-    private String email; // Added to fix AuthController error
-    private String role; // Using String to simplify conversion
+    
+    private String email;
+
+    private String role; // Standardized to String to match AuthController
 }

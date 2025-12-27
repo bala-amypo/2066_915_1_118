@@ -34,7 +34,10 @@ public class AuthController {
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(request.getRole());
+        // Ensure request.getRole() returns a String. 
+        // If it returns an Enum, use request.getRole().name()
+        user.setRole(request.getRole()); 
+        
         return ResponseEntity.ok(userRepository.save(user));
     }
 
@@ -45,6 +48,6 @@ public class AuthController {
         );
         AppUser user = userRepository.findByUsername(request.getUsername()).orElseThrow();
         String token = jwtTokenProvider.generateToken(user);
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok(new AuthResponse(token)); // Wrapped in DTO for better test compatibility
     }
 }
