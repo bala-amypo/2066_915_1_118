@@ -5,6 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DelayScoreRepository extends JpaRepository<DelayScoreRecord, Long> {
-    // This provides the saveAndFlush() method needed by your Service
+public interface DelayScoreRecordRepository extends JpaRepository<DelayScoreRecord, Long> {
 }
