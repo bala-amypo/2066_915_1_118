@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.model.SupplierRiskAlert;
+import com.example.demo.entity.SupplierRiskAlert;
 
 import java.util.List;
 

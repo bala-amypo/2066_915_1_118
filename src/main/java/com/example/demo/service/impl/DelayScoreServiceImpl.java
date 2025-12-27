@@ -1,9 +1,9 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.DelayScoreRecord;
-import com.example.demo.model.DeliveryRecord;
-import com.example.demo.model.PurchaseOrderRecord;
-import com.example.demo.model.SupplierProfile;
+import com.example.demo.entity.DelayScoreRecord;
+import com.example.demo.entity.DeliveryRecord;
+import com.example.demo.entity.PurchaseOrderRecord;
+import com.example.demo.entity.SupplierProfile;
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.repository.DelayScoreRecordRepository;
 import com.example.demo.repository.DeliveryRecordRepository;
