@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.model.DeliveryRecord;
+
 import java.util.List;
 
 public interface DeliveryRecordService {
@@ -8,3 +9,5 @@ public interface DeliveryRecordService {
     List<DeliveryRecord> getDeliveriesByPO(Long poId);
     List<DeliveryRecord> getAllDeliveries();
 }
+
+
