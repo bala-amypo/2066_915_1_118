@@ -1,9 +1,10 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "supplier_risk_alert")
+@Table(name = "supplier_risk_alerts")
 public class SupplierRiskAlert {
 
     @Id
@@ -11,38 +12,63 @@ public class SupplierRiskAlert {
     private Long id;
 
     private Long supplierId;
-    private String alertType;
-    private String description;
-    private Boolean resolved = false;
+
     private String alertLevel;
 
-    public SupplierRiskAlert() {
+    private String message;
+
+    private LocalDateTime alertDate;
+
+    @Column(nullable = false)
+    private Boolean resolved = false;
+
+    @PrePersist
+    void onCreate() {
+        this.alertDate = LocalDateTime.now();
     }
 
- 
-    public SupplierRiskAlert(Long supplierId, String alertType,
-                             String description, String alertLevel) {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(Long supplierId) {
         this.supplierId = supplierId;
-        this.alertType = alertType;
-        this.description = description;
+    }
+
+    public String getAlertLevel() {
+        return alertLevel;
+    }
+
+    public void setAlertLevel(String alertLevel) {
         this.alertLevel = alertLevel;
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public String getMessage() {
+        return message;
+    }
 
-    public Long getSupplierId() { return supplierId; }
-    public void setSupplierId(Long supplierId) { this.supplierId = supplierId; }
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
-    public String getAlertType() { return alertType; }
-    public void setAlertType(String alertType) { this.alertType = alertType; }
+    public LocalDateTime getAlertDate() {
+        return alertDate;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public Boolean getResolved() {
+        return resolved;
+    }
 
-    public Boolean getResolved() { return resolved; }
-    public void setResolved(Boolean resolved) { this.resolved = resolved; }
-
-    public String getAlertLevel() { return alertLevel; }
-    public void setAlertLevel(String alertLevel) { this.alertLevel = alertLevel; }
+    public void setResolved(Boolean resolved) {
+        this.resolved = resolved;
+    }
 }
+
