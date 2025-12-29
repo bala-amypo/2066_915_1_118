@@ -25,7 +25,7 @@ public class SupplierProfile {
         createdAt = LocalDateTime.now();
     }
 
-    // getters & setters
+    
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
