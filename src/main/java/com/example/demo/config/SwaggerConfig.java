@@ -1,37 +1,47 @@
 package com.example.demo.config;
 
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 @Configuration
 public class SwaggerConfig {
 
-    public static final String SECURITY_SCHEME_NAME = "bearerAuth";
-
     @Bean
-    public OpenAPI openAPI() {
+    public OpenAPI customOpenAPI() {
+        final String securitySchemeName = "bearerAuth";
+
         return new OpenAPI()
+                // 1. Metadata for the UI
                 .info(new Info()
-                        .title("Supply Chain Weak Link Analyzer")
+                        .title("Demo API")
                         .version("1.0")
-                        .description("JWT-secured Supply Chain Analytics API")
-                )
-                // 🔐 Enable Authorize button
-                .addSecurityItem(new SecurityRequirement().addList(SECURITY_SCHEME_NAME))
-                .components(
-                        new io.swagger.v3.oas.models.Components()
-                                .addSecuritySchemes(
-                                        SECURITY_SCHEME_NAME,
-                                        new SecurityScheme()
-                                                .name(SECURITY_SCHEME_NAME)
-                                                .type(SecurityScheme.Type.HTTP)
-                                                .scheme("bearer")
-                                                .bearerFormat("JWT")
-                                )
-                );
+                        .description("Spring Boot 3 JWT Authentication API"))
+                
+                // 2. Global "Authorize" button
+                .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
+                
+                // 3. Define the Security Scheme
+                .components(new Components()
+                        .addSecuritySchemes(securitySchemeName,
+                                new SecurityScheme()
+                                        .name(securitySchemeName)
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT")))
+                
+                // 4. Server Configuration
+                // IMPORTANT: If your proxy handles the "/api" prefix, keep it. 
+                // If not, use the base URL.
+                .servers(List.of(
+                        new Server().url("https://9081.408procr.amypo.ai/").description("Default Server")
+                ));
     }
 }
